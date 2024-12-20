@@ -28,6 +28,31 @@ input, select, button {
     box-sizing: border-box;
 }
 
+select {
+    appearance: none;
+    background-color: white;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="gray" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 35px;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:invalid {
+    color: gray;
+}
+
+select option[disabled][selected] {
+    display: none;
+}
+
+select option {
+    color: black;
+}
+
 input.error, select.error {
     border-color: red;
 }
