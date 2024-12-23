@@ -24,6 +24,13 @@ export function validateField(fieldId, errorId, validationFunction) {
 export function validateAllFields() {
   // Список ID полей, которые нужно проверить
   const fields = ['userName', 'userPhone', 'userEmail', 'userZip', 'sqft', 'demoType'];
+
+  // Проверяем, есть ли поле stairCount и добавляем его в список, если оно видимо
+  const stairCountField = document.getElementById('stairCount');
+  if (!stairCountField.classList.contains('hidden')) {
+    fields.push('stairCount');
+  }
+
   // Проверяем валидность каждого поля
   const isValid = fields.every(fieldId => {
     const field = document.getElementById(fieldId);
@@ -71,4 +78,10 @@ export function validateSqft(sqft) {
 export function validateDemoType(demoType) {
   // Тип демонтажа не должен быть пустым
   return demoType !== '';
+}
+
+// Функция для валидации количества ступеней
+export function validateStairCount(stairCount) {
+  const count = parseInt(stairCount, 10);
+  return !isNaN(count) && count >= 1 && count <= 25;
 }

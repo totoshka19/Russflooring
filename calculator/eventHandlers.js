@@ -1,4 +1,4 @@
-import { validateField, validateAllFields, validateName, validatePhone, validateEmail, validateZip, validateSqft, validateDemoType } from './validation.js';
+import { validateField, validateAllFields, validateName, validatePhone, validateEmail, validateZip, validateSqft, validateDemoType, validateStairCount } from './validation.js';
 import { calculateBaseboardLength, toggleStairsField, handleMaterialSelection } from './calculations.js'; // Импортируем функции
 
 // Функция для настройки обработчиков событий
@@ -34,11 +34,13 @@ export function setupEventHandlers() {
     // Обработчик события ввода для поля имени
     document.getElementById('userName').addEventListener('input', () => {
         handleFieldValidation('userName', 'nameError', validateName);
+        validateAllFields();
     });
 
     // Обработчик события потери фокуса для поля имени
     document.getElementById('userName').addEventListener('blur', () => {
         handleFieldValidation('userName', 'nameError', validateName);
+        validateAllFields();
     });
 
     // Обработчик события ввода для поля email
@@ -57,6 +59,7 @@ export function setupEventHandlers() {
     // Обработчик события потери фокуса для поля email
     document.getElementById('userEmail').addEventListener('blur', () => {
         handleFieldValidation('userEmail', 'emailError', validateEmail);
+        validateAllFields();
     });
 
     // Обработчик события ввода для поля телефона
@@ -81,6 +84,7 @@ export function setupEventHandlers() {
     // Обработчик события потери фокуса для поля телефона
     document.getElementById('userPhone').addEventListener('blur', () => {
         validateField('userPhone', 'phoneError', validatePhone);
+        validateAllFields();
     });
 
     // Обработчик события ввода для поля почтового индекса
@@ -105,6 +109,7 @@ export function setupEventHandlers() {
     // Обработчик события потери фокуса для поля почтового индекса
     document.getElementById('userZip').addEventListener('blur', () => {
         handleFieldValidation('userZip', 'zipError', validateZip);
+        validateAllFields();
     });
 
     // Обработчик события ввода для поля sqft
@@ -123,17 +128,58 @@ export function setupEventHandlers() {
     // Обработчик события потери фокуса для поля sqft
     document.getElementById('sqft').addEventListener('blur', () => {
         handleFieldValidation('sqft', 'sqftError', validateSqft);
+        validateAllFields(); // Добавляем вызов
     });
 
-    // Обработчик события изменения чекбокса для плинтуса
-    document.getElementById('hasBaseboard').addEventListener('change', calculateBaseboardLength);
+// Обработчик события изменения чекбокса для плинтуса
+    document.getElementById('hasBaseboard').addEventListener('change', () => {
+        calculateBaseboardLength();
+        validateAllFields(); // Добавляем вызов
+    });
 
-    // Обработчик события изменения чекбокса для лестниц
-    document.getElementById('hasStairs').addEventListener('change', toggleStairsField);
+// Обработчик события изменения чекбокса для лестниц
+    document.getElementById('hasStairs').addEventListener('change', () => {
+        toggleStairsField();
+        validateAllFields(); // Добавляем вызов
+    });
 
-    // Обработчик события изменения выбора материала
-    document.getElementById('material').addEventListener('change', handleMaterialSelection);
+// Обработчик события изменения выбора материала
+    document.getElementById('material').addEventListener('change', () => {
+        handleMaterialSelection();
+        validateAllFields(); // Добавляем вызов
+    });
 
-    // Обработчик события изменения поля sqft
-    document.getElementById('sqft').addEventListener('input', calculateBaseboardLength);
+// Обработчик события изменения поля sqft
+    document.getElementById('sqft').addEventListener('input', () => {
+        calculateBaseboardLength();
+        validateAllFields(); // Добавляем вызов
+    });
 }
+
+// TODO потом удалить
+// Временная функция для заполнения моковыми данными
+function fillMockData() {
+    // Заполняем текстовые поля моковыми данными
+    document.getElementById('userName').value = 'John Doe';
+    document.getElementById('userPhone').value = '1234567890';
+    document.getElementById('userEmail').value = 'johndoe@example.com';
+    document.getElementById('userZip').value = '12345';
+    document.getElementById('sqft').value = '1500';
+
+    // Заполняем поле "What type of floor do you need to remove?"
+    const demoTypeSelect = document.getElementById('demoType');
+    demoTypeSelect.value = '2.5'; // Выбираем "Tile" (значение 2.5)
+
+    // Заполняем поле "What type of the flooring material do you need to install?"
+    const materialSelect = document.getElementById('material');
+    materialSelect.value = 'vinyl'; // Выбираем "Luxury Vinyl Plank"
+
+    // Вызываем обработчик изменения для материала, чтобы показать соответствующие опции
+    handleMaterialSelection();
+
+    // Вызываем валидацию всех полей, чтобы включить кнопку "Proceed"
+    validateAllFields();
+}
+
+// Вызываем функцию заполнения моковых данных при загрузке страницы
+document.addEventListener('DOMContentLoaded', fillMockData);

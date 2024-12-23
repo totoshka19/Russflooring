@@ -28,12 +28,12 @@
 			<div id="zipError" class="error-message">Zip code must be 5 digits.</div>
 			
 			<label for="sqft">How many sqft do you have?<span class="required-marker">*</span>:</label>
-			<input type="number" id="sqft" placeholder="Please enter approximate sqft" min="100" max="10000" required>
+			<input type="number" id="sqft" placeholder="Enter approximate sqft" min="100" max="10000" required>
 			<div id="sqftError" class="error-message">Square footage must be between 100 and 10,000.</div>
 			
 			<label for="demoType">What type of floor do you need to remove?<span class="required-marker">*</span>:</label>
 			<select id="demoType" required>
-				<option value="" disabled selected hidden>Please select a floor type</option>
+				<option value="" disabled selected hidden>Select a floor type</option>
 				<option value="1">Carpet</option>
 				<option value="2.5">Tile</option>
 				<option value="2.5">Hardwood</option>
@@ -42,7 +42,7 @@
 				<option value="1">Linoleum</option>
 				<option value="0">I don’t need removal</option>
 			</select>
-			<div id="demoError" class="error-message">Please select a floor type.</div>
+			<div id="demoError" class="error-message">Select a floor type.</div>
 			
 			<label class="checkbox-label">
 				<input type="checkbox" id="hasBaseboard" class="checkbox-input">
@@ -52,7 +52,7 @@
 			
 			<label for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span>:</label>
 			<select id="material" required>
-				<option value="" disabled selected hidden>Please select flooring material</option>
+				<option value="" disabled selected hidden>Select flooring material</option>
 				<option value="vinyl">Luxury Vinyl Plank</option>
 				<option value="laminate">Laminate</option>
 				<option value="hardwood">Hardwood</option>
@@ -102,7 +102,7 @@
 				<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25">
 			</div>
 			
-			<button id="submitButton" disabled>Proceed</button>
+			<button id="submitButton" type="button" disabled>Proceed</button>
 			<div id="totalCost" class="result hidden">Total Cost: $<span id="costAmount">0</span></div>
 		</form>
 		

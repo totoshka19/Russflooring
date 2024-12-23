@@ -96,3 +96,55 @@ export function setupSubmitButton() {
     document.getElementById('totalCost').classList.remove('hidden');
   });
 }
+
+// Функция для расчета общей стоимости
+export function calculateTotalCost() {
+  // Получаем площадь в квадратных футах и преобразуем ее в число
+  const sqft = parseFloat(document.getElementById('sqft').value.trim());
+  // Получаем значение типа демонтажа (если есть)
+  const demoTypeValue = parseFloat(document.getElementById('demoType').value || 0);
+  // Проверяем, установлен ли флажок для плинтуса
+  const hasBaseboard = document.getElementById('hasBaseboard').checked;
+  // Получаем выбранный материал
+  const material = document.getElementById('material').value;
+  // Получаем количество ступеней (если есть)
+  const stairsCount = parseInt(document.getElementById('stairCount')?.value || 0, 10);
+  // Инициализируем переменную для стоимости материала
+  let materialCost = 0;
+
+  // Устанавливаем стоимость материала в зависимости от выбранного материала
+  if (material === "vinyl") {
+    materialCost = parseFloat(document.getElementById('vinylOption').value || 0);
+  } else if (material === "laminate") {
+    materialCost = parseFloat(document.getElementById('laminateOption').value || 0);
+  } else if (material === "hardwood") {
+    materialCost = parseFloat(document.getElementById('hardwoodOption').value || 0);
+  } else if (material === "installationOnly") {
+    materialCost = parseFloat(document.getElementById('installationType').value || 0);
+  }
+
+  // Рассчитываем стоимость плинтуса
+  const baseboardCost = hasBaseboard ? sqft * 0.5 : 0;
+  // Рассчитываем стоимость лестницы
+  const stairCost = stairsCount > 0 ? stairsCount * 50 : 0;
+
+  // Рассчитываем общую стоимость
+  const totalCost = (sqft * (demoTypeValue + materialCost)) + baseboardCost + stairCost;
+
+  // Отображаем общую стоимость с двумя знаками после запятой
+  document.getElementById('costAmount').textContent = totalCost.toFixed(2);
+  // Показываем результат расчета
+  document.getElementById('totalCost').classList.remove('hidden');
+}
+
+// Обработчики событий для обновления Total Cost в реальном времени
+document.getElementById('sqft').addEventListener('input', calculateTotalCost);
+document.getElementById('demoType').addEventListener('change', calculateTotalCost);
+document.getElementById('material').addEventListener('change', calculateTotalCost);
+document.getElementById('hasBaseboard').addEventListener('change', calculateTotalCost);
+document.getElementById('hasStairs').addEventListener('change', calculateTotalCost);
+document.getElementById('stairCount').addEventListener('input', calculateTotalCost);
+document.getElementById('vinylOption').addEventListener('change', calculateTotalCost);
+document.getElementById('laminateOption').addEventListener('change', calculateTotalCost);
+document.getElementById('hardwoodOption').addEventListener('change', calculateTotalCost);
+document.getElementById('installationType').addEventListener('change', calculateTotalCost);
