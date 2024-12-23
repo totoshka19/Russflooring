@@ -3,320 +3,110 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>User Contact Information</title>
+		<title>Calculator | RUSS FLOORING</title>
 		<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600&display=swap" rel="stylesheet">
-		<style>
-			body {
-				font-family: 'Bai Jamjuree', sans-serif;
-				max-width: 600px;
-				margin: 0 auto;
-				padding: 20px;
-				background-color: #f9f9f9;
-			}
-			label {
-				display: block;
-				margin-bottom: 5px;
-				font-weight: bold;
-			}
-			.required-marker {
-				color: red;
-				margin-left: 5px;
-			}
-			input, select, button {
-				display: block;
-				margin-bottom: 10px;
-				width: 100%;
-				padding: 12px;
-				font-size: 1rem;
-				border: 1px solid #ccc;
-				border-radius: 5px;
-				box-sizing: border-box;
-			}
-			input.error, select.error {
-				border-color: red;
-			}
-			.error-message {
-				color: red;
-				font-size: 0.9rem;
-				margin-top: -8px;
-				margin-bottom: 10px;
-				display: none;
-			}
-			button {
-				background-color: #1ec2dd;
-				color: white;
-				border: none;
-				cursor: pointer;
-				font-weight: 500;
-				text-transform: uppercase;
-			}
-			button:disabled {
-				background-color: #ccc;
-				cursor: not-allowed;
-			}
-			button:hover:not(:disabled) {
-				background-color: #17a5bf;
-			}
-			.result {
-				margin-top: 20px;
-				font-size: 1.2rem;
-				font-weight: bold;
-			}
-			.hidden {
-				display: none;
-			}
-		</style>
+		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
+		<h1>Construction Cost Calculator</h1>
 		
-		<h1>User Contact Information</h1>
-		
-		<label for="userName">Name<span class="required-marker">*</span>:</label>
-		<input type="text" id="userName" placeholder="Enter your name" maxlength="30" pattern="[A-Za-z\s]+" title="Name should only contain letters and spaces." required>
-		<div id="nameError" class="error-message">Please enter a valid name (letters and spaces only).</div>
-		
-		<label for="userPhone">Phone Number<span class="required-marker">*</span>:</label>
-		<input type="tel" id="userPhone" placeholder="Enter your phone number" maxlength="10" pattern="[0-9]{10}" title="Phone number must be 10 digits." required>
-		<div id="phoneError" class="error-message">Phone number must be 10 digits.</div>
-		
-		<label for="userEmail">Email Address<span class="required-marker">*</span>:</label>
-		<input type="email" id="userEmail" placeholder="Enter your email" title="Enter a valid email address." required>
-		<div id="emailError" class="error-message">Please enter a valid email address.</div>
-		
-		<label for="userZip">Zip Code<span class="required-marker">*</span>:</label>
-		<input type="text" id="userZip" placeholder="Enter your zip code" maxlength="5" pattern="[0-9]{5}" title="Zip code must be 5 digits." required>
-		<div id="zipError" class="error-message">Zip code must be 5 digits.</div>
-		
-		<label for="sqft">How many sqft do you have?<span class="required-marker">*</span>:</label>
-		<input type="number" id="sqft" placeholder="Please enter approximate sqft" min="100" max="10000" required>
-		<div id="sqftError" class="error-message">Square footage must be between 100 and 10,000.</div>
-		
-		<label for="demoType">What type of floor do you need to remove?<span class="required-marker">*</span>:</label>
-		<select id="demoType" required>
-			<option value="">Select floor type</option>
-			<option value="1">Carpet</option>
-			<option value="2.5">Tile</option>
-			<option value="2.5">Hardwood</option>
-			<option value="1">Vinyl</option>
-			<option value="1">Laminate</option>
-			<option value="1">Linoleum</option>
-			<option value="0">I don’t need removal</option>
-		</select>
-		
-		<div id="demoError" class="error-message">Please select a floor type.</div>
-		
-		<label>
-			<input type="checkbox" id="hasBaseboard" onchange="calculateBaseboardLength()">
-			Do you need baseboard replacement? <span>(If yes, please click on checkbox)</span>
-		</label>
-		<div id="baseboardLengthResult" class="result hidden">Approximate Baseboard Length: <span id="baseboardLength">0</span> linear feet</div>
-		
-		<label for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span>:</label>
-		<select id="material" onchange="handleMaterialSelection()" required>
-			<option value="">Select flooring material</option>
-			<option value="vinyl">Luxury Vinyl Plank</option>
-			<option value="laminate">Laminate</option>
-			<option value="hardwood">Hardwood</option>
-			<option value="installationOnly">I have material and need installation only</option>
-		</select>
-		
-		<div id="vinylOptions" class="hidden">
-			<label for="vinylOption">Choose Vinyl Option<span class="required-marker">*</span>:</label>
-			<select id="vinylOption" required>
-				<option value="1.49">Luxury Vinyl 5.5 mm</option>
-				<option value="1.89">Luxury Vinyl 6.5 mm</option>
-				<option value="2.29">Luxury Vinyl 8 mm</option>
+		<form id="costCalculator">
+			<label for="userName">Name<span class="required-marker">*</span>:</label>
+			<input type="text" id="userName" placeholder="Enter your name" maxlength="30" pattern="[A-Za-z\s]+" title="Name should only contain letters and spaces." required>
+			<div id="nameError" class="error-message">Please enter a valid name (letters and spaces only).</div>
+			
+			<label for="userPhone">Phone Number<span class="required-marker">*</span>:</label>
+			<input type="tel" id="userPhone" placeholder="Enter your phone number" maxlength="10" pattern="[0-9]{10}" title="Phone number must be 10 digits." required>
+			<div id="phoneError" class="error-message">Phone number must be 10 digits.</div>
+			
+			<label for="userEmail">Email Address<span class="required-marker">*</span>:</label>
+			<input type="email" id="userEmail" placeholder="Enter your email" title="Enter a valid email address." required>
+			<div id="emailError" class="error-message">Please enter a valid email address.</div>
+			
+			<label for="userZip">Zip Code<span class="required-marker">*</span>:</label>
+			<input type="text" id="userZip" placeholder="Enter your zip code" maxlength="5" pattern="[0-9]{5}" title="Zip code must be 5 digits." required>
+			<div id="zipError" class="error-message">Zip code must be 5 digits.</div>
+			
+			<label for="sqft">How many sqft do you have?<span class="required-marker">*</span>:</label>
+			<input type="number" id="sqft" placeholder="Enter approximate sqft" min="100" max="10000" required>
+			<div id="sqftError" class="error-message">Square footage must be between 100 and 10,000.</div>
+			
+			<label for="demoType">What type of floor do you need to remove?<span class="required-marker">*</span>:</label>
+			<select id="demoType" required>
+				<option value="" disabled selected hidden>Select a floor type</option>
+				<option value="1">Carpet</option>
+				<option value="2.5">Tile</option>
+				<option value="2.5">Hardwood</option>
+				<option value="1">Vinyl</option>
+				<option value="1">Laminate</option>
+				<option value="1">Linoleum</option>
+				<option value="0">I don’t need removal</option>
 			</select>
-		</div>
-		
-		<div id="laminateOptions" class="hidden">
-			<label for="laminateOption">Choose Laminate Option<span class="required-marker">*</span>:</label>
-			<select id="laminateOption" required>
-				<option value="2.39">Laminate 12 mm no pad attached</option>
-				<option value="2.59">Laminate 10 mm pad attached</option>
+			<div id="demoError" class="error-message">Select a floor type.</div>
+			
+			<label class="checkbox-label">
+				<input type="checkbox" id="hasBaseboard" class="checkbox-input">
+				Do you need baseboard replacement? <span class="checkbox-hint">(If yes, please click on checkbox)</span>
+			</label>
+			<div id="baseboardLengthResult" class="result hidden">Approximate Baseboard Length: <span id="baseboardLength">0</span> linear feet</div>
+			
+			<label for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span>:</label>
+			<select id="material" required>
+				<option value="" disabled selected hidden>Select flooring material</option>
+				<option value="vinyl">Luxury Vinyl Plank</option>
+				<option value="laminate">Laminate</option>
+				<option value="hardwood">Hardwood</option>
+				<option value="installationOnly">I have material and need installation only</option>
 			</select>
-		</div>
+			
+			<div id="vinylOptions" class="hidden">
+				<label for="vinylOption">Choose Vinyl Option<span class="required-marker">*</span>:</label>
+				<select id="vinylOption" required>
+					<option value="1.49">Luxury Vinyl 5.5 mm</option>
+					<option value="1.89">Luxury Vinyl 6.5 mm</option>
+					<option value="2.29">Luxury Vinyl 8 mm</option>
+				</select>
+			</div>
+			
+			<div id="laminateOptions" class="hidden">
+				<label for="laminateOption">Choose Laminate Option<span class="required-marker">*</span>:</label>
+				<select id="laminateOption" required>
+					<option value="2.39">Laminate 12 mm no pad attached</option>
+					<option value="2.59">Laminate 10 mm pad attached</option>
+				</select>
+			</div>
+			
+			<div id="hardwoodOptions" class="hidden">
+				<label for="hardwoodOption">Choose Hardwood Option<span class="required-marker">*</span>:</label>
+				<select id="hardwoodOption" required>
+					<option value="3.89">Waterproof Hardwood 7 mm</option>
+					<option value="5.89">Engineered Hardwood 12 mm</option>
+				</select>
+			</div>
+			
+			<div id="installationOnlyOptions" class="hidden">
+				<label for="installationType">What type of material do you need to install?<span class="required-marker">*</span>:</label>
+				<select id="installationType" required>
+					<option value="2.25">Luxury Vinyl Plank</option>
+					<option value="2.25">Laminate</option>
+					<option value="3.25">Hardwood</option>
+				</select>
+			</div>
+			
+			<label class="checkbox-label">
+				<input type="checkbox" id="hasStairs" class="checkbox-input">
+				Do you have stairs? <span class="checkbox-hint">(If yes, please click on checkbox)</span>
+			</label>
+			<div id="stairsField" class="hidden">
+				<label for="stairCount">Number of stairs:<span class="required-marker">*</span></label>
+				<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25" required>
+				<div id="stairCountError" class="error-message hidden">Please enter a number between 1 and 25</div>
+			</div>
+			
+			<button id="submitButton" type="button" disabled>Proceed</button>
+			<div id="totalCost" class="result hidden">Total Cost: $<span id="costAmount">0</span></div>
+		</form>
 		
-		<div id="hardwoodOptions" class="hidden">
-			<label for="hardwoodOption">Choose Hardwood Option<span class="required-marker">*</span>:</label>
-			<select id="hardwoodOption" required>
-				<option value="3.89">Waterproof Hardwood 7 mm</option>
-				<option value="5.89">Engineered Hardwood 12 mm</option>
-			</select>
-		</div>
-		
-		<div id="installationOnlyOptions" class="hidden">
-			<label for="installationType">What type of material do you need to install?<span class="required-marker">*</span>:</label>
-			<select id="installationType" required>
-				<option value="2.25">Luxury Vinyl Plank</option>
-				<option value="2.25">Laminate</option>
-				<option value="3.25">Hardwood</option>
-			</select>
-		</div>
-		
-		<label>
-			<input type="checkbox" id="hasStairs" onchange="toggleStairsField()">
-			Do you have stairs? <span>(If yes, please click on checkbox)</span>
-		</label>
-		<div id="stairsField" class="hidden">
-			<label for="stairCount">Number of stairs:<span class="required-marker">*</span></label>
-			<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25">
-		</div>
-		
-		<button id="submitButton" disabled>Proceed</button>
-		<div id="totalCost" class="result hidden">Total Cost: $<span id="costAmount">0</span></div>
-		
-		<script>
-			function validateUserInfo() {
-				const name = document.getElementById('userName').value.trim();
-				const phone = document.getElementById('userPhone').value.trim();
-				const email = document.getElementById('userEmail').value.trim();
-				const zip = document.getElementById('userZip').value.trim();
-				const sqft = document.getElementById('sqft').value.trim();
-				const demoType = document.getElementById('demoType').value;
-				
-				const nameError = document.getElementById('nameError');
-				const phoneError = document.getElementById('phoneError');
-				const emailError = document.getElementById('emailError');
-				const zipError = document.getElementById('zipError');
-				const sqftError = document.getElementById('sqftError');
-				const demoError = document.getElementById('demoError');
-				
-				let isValid = true;
-				
-				if (name.length > 0 && /^[A-Za-z\s]+$/.
-				test(name)) {
-					nameError.style.display = 'none';
-					document.getElementById('userName').classList.remove('error');
-				} else {
-					nameError.style.display = 'block';
-					document.getElementById('userName').classList.add('error');
-					isValid = false;
-				}
-				
-				if (phone.length === 10 && /^[0-9]{10}$/.test(phone)) {
-					phoneError.style.display = 'none';
-					document.getElementById('userPhone').classList.remove('error');
-				} else {
-					phoneError.style.display = 'block';
-					document.getElementById('userPhone').classList.add('error');
-					isValid = false;
-				}
-				
-				if (email.includes('@') && email.includes('.')) {
-					emailError.style.display = 'none';
-					document.getElementById('userEmail').classList.remove('error');
-				} else {
-					emailError.style.display = 'block';
-					document.getElementById('userEmail').classList.add('error');
-					isValid = false;
-				}
-				
-				if (zip.length === 5 && /^[0-9]{5}$/.test(zip)) {
-					zipError.style.display = 'none';
-					document.getElementById('userZip').classList.remove('error');
-				} else {
-					zipError.style.display = 'block';
-					document.getElementById('userZip').classList.add('error');
-					isValid = false;
-				}
-				
-				const sqftValue = parseFloat(sqft);
-				if (!isNaN(sqftValue) && sqftValue >= 100 && sqftValue <= 10000) {
-					sqftError.style.display = 'none';
-					document.getElementById('sqft').classList.remove('error');
-				} else {
-					sqftError.style.display = 'block';
-					document.getElementById('sqft').classList.add('error');
-					isValid = false;
-				}
-				
-				if (demoType) {
-					demoError.style.display = 'none';
-					document.getElementById('demoType').classList.remove('error');
-				} else {
-					demoError.style.display = 'block';
-					document.getElementById('demoType').classList.add('error');
-					isValid = false;
-				}
-				
-				document.getElementById('submitButton').disabled = !isValid;
-				
-				if (isValid) calculateBaseboardLength();
-			}
-			
-			function calculateBaseboardLength() {
-				const sqft = parseFloat(document.getElementById('sqft').value.trim());
-				const hasBaseboard = document.getElementById('hasBaseboard').checked;
-				
-				if (hasBaseboard && !isNaN(sqft)) {
-					const baseboardLength = 2 * (Math.sqrt(sqft) * 2 + 100);
-					document.getElementById('baseboardLength').textContent = Math.round(baseboardLength);
-					document.getElementById('baseboardLengthResult').classList.remove('hidden');
-				} else {
-					document.getElementById('baseboardLengthResult').classList.add('hidden');
-				}
-			}
-			
-			function toggleStairsField() {
-				const hasStairs = document.getElementById('hasStairs').checked;
-				const stairsField = document.getElementById('stairsField');
-				stairsField.classList.toggle('hidden', !hasStairs);
-			}
-			
-			function handleMaterialSelection() {
-				const material = document.getElementById('material').value;
-				
-				document.getElementById('vinylOptions').classList.add('hidden');
-				document.getElementById('laminateOptions').classList.add('hidden');
-				document.getElementById('hardwoodOptions').classList.add('hidden');
-				document.getElementById('installationOnlyOptions').classList.add('hidden');
-				
-				if (material === "vinyl") {
-					document.getElementById('vinylOptions').classList.remove('hidden');
-				} else if (material === "laminate") {
-					document.getElementById('laminateOptions').classList.remove('hidden');
-				} else if (material === "hardwood") {
-					document.getElementById('hardwoodOptions').classList.remove('hidden');
-				} else if (material === "installationOnly") {
-					document.getElementById('installationOnlyOptions').classList.remove('hidden');
-				}
-			}
-			
-			document.querySelectorAll('#userName, #userPhone, #userEmail, #userZip, #sqft, #demoType').forEach((input) => {
-				input.addEventListener('input', validateUserInfo);
-				input.addEventListener('change', validateUserInfo);
-			});
-			
-			document.getElementById('hasBaseboard').addEventListener('change', calculateBaseboardLength);
-			
-			document.getElementById('submitButton').addEventListener('click', () => {
-				const sqft = parseFloat(document.getElementById('sqft').value.trim());
-				const demoTypeValue = parseFloat(document.getElementById('demoType').value || 0);
-				const hasBaseboard = document.getElementById('hasBaseboard').checked;
-				const material = document.getElementById('material').value;
-				const stairsCount = parseInt(document.getElementById('stairCount')?.value || 0, 10);
-				let materialCost = 0;
-				
-				if (material === "vinyl") {
-					materialCost = parseFloat(document.getElementById('vinylOption').value || 0);
-				} else if (material === "laminate") {
-					materialCost = parseFloat(document.getElementById('laminateOption').value || 0);
-				} else if (material === "hardwood") {
-					materialCost = parseFloat(document.getElementById('hardwoodOption').value || 0);
-				} else if (material === "installationOnly") {
-					materialCost = parseFloat(document.getElementById('installationType').value || 0);
-				}
-				
-				const baseboardCost = hasBaseboard ? sqft * 0.5 : 0;
-				const stairCost = stairsCount > 0 ? stairsCount * 50 : 0;
-				
-				const totalCost = (sqft * (demoTypeValue + materialCost)) + baseboardCost + stairCost;
-				
-				document.getElementById('costAmount').textContent = totalCost.toFixed(2);
-				document.getElementById('totalCost').classList.remove('hidden');
-			});
-		</script>
+		<script type="module" src="script.js"></script>
 	</body>
 </html>
-
