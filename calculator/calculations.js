@@ -131,10 +131,15 @@ export function calculateTotalCost() {
   // Рассчитываем общую стоимость
   const totalCost = (sqft * (demoTypeValue + materialCost)) + baseboardCost + stairCost;
 
-  // Отображаем общую стоимость с двумя знаками после запятой
-  document.getElementById('costAmount').textContent = totalCost.toFixed(2);
-  // Показываем результат расчета
-  document.getElementById('totalCost').classList.remove('hidden');
+  // Проверяем, что totalCost не равно 0.00 или NaN
+  if (totalCost === 0 || isNaN(totalCost)) {
+    document.getElementById('totalCost').classList.add('hidden');
+  } else {
+    // Отображаем общую стоимость с двумя знаками после запятой
+    document.getElementById('costAmount').textContent = totalCost.toFixed(2);
+    // Показываем результат расчета
+    document.getElementById('totalCost').classList.remove('hidden');
+  }
 }
 
 // Обработчики событий для обновления Total Cost в реальном времени

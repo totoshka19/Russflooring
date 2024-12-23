@@ -23,7 +23,7 @@ export function validateField(fieldId, errorId, validationFunction) {
 // Функция для проверки валидности всех полей
 export function validateAllFields() {
   // Список ID полей, которые нужно проверить
-  const fields = ['userName', 'userPhone', 'userEmail', 'userZip', 'sqft', 'demoType'];
+  const fields = ['userName', 'userPhone', 'userEmail', 'userZip', 'sqft', 'demoType', 'material'];
 
   // Проверяем, есть ли поле stairCount и добавляем его в список, если оно видимо
   const stairCountField = document.getElementById('stairCount');
@@ -39,6 +39,13 @@ export function validateAllFields() {
 
   // Включаем или отключаем кнопку отправки в зависимости от валидности всех полей
   document.getElementById('submitButton').disabled = !isValid;
+
+  // Если все поля валидны, обновляем Total Cost
+  if (isValid) {
+    calculateTotalCost();
+  } else {
+    document.getElementById('totalCost').classList.add('hidden');
+  }
 }
 
 // Функция для валидации имени

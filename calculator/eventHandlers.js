@@ -164,15 +164,15 @@ function fillMockData() {
     document.getElementById('userPhone').value = '1234567890';
     document.getElementById('userEmail').value = 'johndoe@example.com';
     document.getElementById('userZip').value = '12345';
-    document.getElementById('sqft').value = '1500';
+    // document.getElementById('sqft').value = '1500';
 
     // Заполняем поле "What type of floor do you need to remove?"
-    const demoTypeSelect = document.getElementById('demoType');
-    demoTypeSelect.value = '2.5'; // Выбираем "Tile" (значение 2.5)
+    // const demoTypeSelect = document.getElementById('demoType');
+    // demoTypeSelect.value = '2.5'; // Выбираем "Tile" (значение 2.5)
 
     // Заполняем поле "What type of the flooring material do you need to install?"
-    const materialSelect = document.getElementById('material');
-    materialSelect.value = 'vinyl'; // Выбираем "Luxury Vinyl Plank"
+    // const materialSelect = document.getElementById('material');
+    // materialSelect.value = 'vinyl'; // Выбираем "Luxury Vinyl Plank"
 
     // Вызываем обработчик изменения для материала, чтобы показать соответствующие опции
     handleMaterialSelection();
