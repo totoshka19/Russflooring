@@ -99,7 +99,8 @@
 			</label>
 			<div id="stairsField" class="hidden">
 				<label for="stairCount">Number of stairs:<span class="required-marker">*</span></label>
-				<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25">
+				<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25" required>
+				<div id="stairCountError" class="error-message hidden">Please enter a number between 1 and 25</div>
 			</div>
 			
 			<button id="submitButton" type="button" disabled>Proceed</button>

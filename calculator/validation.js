@@ -1,3 +1,5 @@
+import {calculateTotalCost} from "./calculations.js";
+
 // Функция для валидации отдельного поля
 export function validateField(fieldId, errorId, validationFunction) {
   // Получаем поле и элемент ошибки по их ID
@@ -22,29 +24,27 @@ export function validateField(fieldId, errorId, validationFunction) {
 
 // Функция для проверки валидности всех полей
 export function validateAllFields() {
-  // Список ID полей, которые нужно проверить
   const fields = ['userName', 'userPhone', 'userEmail', 'userZip', 'sqft', 'demoType', 'material'];
 
-  // Проверяем, есть ли поле stairCount и добавляем его в список, если оно видимо
+  // Проверяем поле stairCount, если отмечен checkbox hasStairs
+  const hasStairs = document.getElementById('hasStairs').checked;
   const stairCountField = document.getElementById('stairCount');
-  if (!stairCountField.classList.contains('hidden')) {
-    fields.push('stairCount');
-  }
 
-  // Проверяем валидность каждого поля
   const isValid = fields.every(fieldId => {
     const field = document.getElementById(fieldId);
     return field.checkValidity();
-  });
+  }) && (!hasStairs || (hasStairs && stairCountField.value.trim() !== ''));
 
-  // Включаем или отключаем кнопку отправки в зависимости от валидности всех полей
-  document.getElementById('submitButton').disabled = !isValid;
+  const submitButton = document.getElementById('submitButton');
+  const totalCost = document.getElementById('totalCost');
 
-  // Если все поля валидны, обновляем Total Cost
-  if (isValid) {
-    calculateTotalCost();
+  submitButton.disabled = !isValid;
+
+  // Если форма не валидна, скрываем Total Cost
+  if (!isValid) {
+    totalCost.classList.add('hidden');
   } else {
-    document.getElementById('totalCost').classList.add('hidden');
+    calculateTotalCost();
   }
 }
 
@@ -79,12 +79,6 @@ export function validateSqft(sqft) {
   const sqftValue = parseFloat(sqft);
   // Проверяем, что значение является числом и находится в диапазоне от 100 до 10000
   return !isNaN(sqftValue) && sqftValue >= 100 && sqftValue <= 10000;
-}
-
-// Функция для валидации типа демонтажа
-export function validateDemoType(demoType) {
-  // Тип демонтажа не должен быть пустым
-  return demoType !== '';
 }
 
 // Функция для валидации количества ступеней

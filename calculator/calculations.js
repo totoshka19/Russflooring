@@ -1,3 +1,7 @@
+import {validateAllFields} from "./validation.js";
+
+// TODO отрефакторить тут
+
 // Функция для расчета длины плинтуса
 export function calculateBaseboardLength() {
   // Получаем значение площади в квадратных футах и преобразуем его в число
@@ -29,6 +33,14 @@ export function toggleStairsField() {
   const stairsField = document.getElementById('stairsField');
   // Переключаем видимость поля в зависимости от состояния флажка
   stairsField.classList.toggle('hidden', !hasStairs);
+
+  // Если галочка убрана, очищаем поле
+  if (!hasStairs) {
+    stairCount.value = '';
+  }
+
+  // Вызываем валидацию для обновления состояния формы
+  validateAllFields();
 }
 
 // Функция для обработки выбора материала
@@ -99,6 +111,15 @@ export function setupSubmitButton() {
 
 // Функция для расчета общей стоимости
 export function calculateTotalCost() {
+  // Проверяем, активна ли кнопка Proceed
+  const submitButton = document.getElementById('submitButton');
+  const totalCostElement = document.getElementById('totalCost');
+
+  if (submitButton.disabled) {
+    totalCostElement.classList.add('hidden');
+    return;
+  }
+
   // Получаем площадь в квадратных футах и преобразуем ее в число
   const sqft = parseFloat(document.getElementById('sqft').value.trim());
   // Получаем значение типа демонтажа (если есть)

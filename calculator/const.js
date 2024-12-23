@@ -1,6 +1,36 @@
 export const elements = {
+  // Поле ввода имени пользователя
+  userName: document.getElementById('userName'),
+
+  // Элемент для отображения ошибки валидации имени
+  nameError: document.getElementById('nameError'),
+
+  // Поле ввода телефона пользователя
+  userPhone: document.getElementById('userPhone'),
+
+  // Элемент для отображения ошибки валидации телефона
+  phoneError: document.getElementById('phoneError'),
+
+  // Поле ввода email пользователя
+  userEmail: document.getElementById('userEmail'),
+
+  // Элемент для отображения ошибки валидации email
+  emailError: document.getElementById('emailError'),
+
+  // Поле ввода почтового индекса пользователя
+  userZip: document.getElementById('userZip'),
+
+  // Элемент для отображения ошибки валидации почтового индекса
+  zipError: document.getElementById('zipError'),
+
   // Поле ввода площади в квадратных футах
   sqft: document.getElementById('sqft'),
+
+  // Элемент для отображения ошибки валидации площади (sqft)
+  sqftError: document.getElementById('sqftError'),
+
+  // Поле ввода типа демонтажа
+  demoType: document.getElementById('demoType'),
 
   // Флажок для выбора наличия плинтуса
   hasBaseboard: document.getElementById('hasBaseboard'),
@@ -10,12 +40,6 @@ export const elements = {
 
   // Контейнер для отображения результата расчета длины плинтуса
   baseboardLengthResult: document.getElementById('baseboardLengthResult'),
-
-  // Флажок для выбора наличия лестницы
-  hasStairs: document.getElementById('hasStairs'),
-
-  // Контейнер для поля ввода количества ступеней
-  stairsField: document.getElementById('stairsField'),
 
   // Выпадающий список для выбора материала
   material: document.getElementById('material'),
@@ -32,45 +56,21 @@ export const elements = {
   // Контейнер для опций "только установка"
   installationOnlyOptions: document.getElementById('installationOnlyOptions'),
 
-  // Кнопка отправки формы
-  submitButton: document.getElementById('submitButton'),
+  // Флажок для выбора наличия лестницы
+  hasStairs: document.getElementById('hasStairs'),
 
-  // Поле ввода имени пользователя
-  userName: document.getElementById('userName'),
-
-  // Поле ввода email пользователя
-  userEmail: document.getElementById('userEmail'),
-
-  // Поле ввода телефона пользователя
-  userPhone: document.getElementById('userPhone'),
-
-  // Поле ввода почтового индекса пользователя
-  userZip: document.getElementById('userZip'),
-
-  // Поле ввода типа демонтажа
-  demoType: document.getElementById('demoType'),
+  // Контейнер для поля ввода количества ступеней
+  stairsField: document.getElementById('stairsField'),
 
   // Поле ввода количества ступеней
   stairCount: document.getElementById('stairCount'),
 
-  // Элемент для отображения общей стоимости
-  costAmount: document.getElementById('costAmount'),
+  // Кнопка отправки формы
+  submitButton: document.getElementById('submitButton'),
 
   // Контейнер для отображения результата расчета стоимости
   totalCost: document.getElementById('totalCost'),
 
-  // Элемент для отображения ошибки валидации имени
-  nameError: document.getElementById('nameError'),
-
-  // Элемент для отображения ошибки валидации email
-  emailError: document.getElementById('emailError'),
-
-  // Элемент для отображения ошибки валидации телефона
-  phoneError: document.getElementById('phoneError'),
-
-  // Элемент для отображения ошибки валидации почтового индекса
-  zipError: document.getElementById('zipError'),
-
-  // Элемент для отображения ошибки валидации площади (sqft)
-  sqftError: document.getElementById('sqftError'),
+  // Элемент для отображения общей стоимости
+  costAmount: document.getElementById('costAmount')
 };

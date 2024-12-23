@@ -1,5 +1,5 @@
-import { validateField, validateAllFields, validateName, validatePhone, validateEmail, validateZip, validateSqft, validateDemoType, validateStairCount } from './validation.js';
-import { calculateBaseboardLength, toggleStairsField, handleMaterialSelection } from './calculations.js'; // Импортируем функции
+import { validateField, validateAllFields, validateName, validatePhone, validateEmail, validateZip, validateSqft, validateStairCount } from './validation.js';
+import { calculateBaseboardLength, toggleStairsField, handleMaterialSelection } from './calculations.js';
 
 // Функция для настройки обработчиков событий
 export function setupEventHandlers() {
@@ -43,25 +43,6 @@ export function setupEventHandlers() {
         validateAllFields();
     });
 
-    // Обработчик события ввода для поля email
-    document.getElementById('userEmail').addEventListener('input', () => {
-        const emailField = document.getElementById('userEmail');
-        const emailError = document.getElementById('emailError');
-
-        // Скрываем ошибку и убираем класс ошибки при вводе
-        emailError.style.display = 'none';
-        emailField.classList.remove('error');
-
-        // Вызываем функцию для проверки всех полей
-        validateAllFields();
-    });
-
-    // Обработчик события потери фокуса для поля email
-    document.getElementById('userEmail').addEventListener('blur', () => {
-        handleFieldValidation('userEmail', 'emailError', validateEmail);
-        validateAllFields();
-    });
-
     // Обработчик события ввода для поля телефона
     document.getElementById('userPhone').addEventListener('input', () => {
         const phoneField = document.getElementById('userPhone');
@@ -84,6 +65,25 @@ export function setupEventHandlers() {
     // Обработчик события потери фокуса для поля телефона
     document.getElementById('userPhone').addEventListener('blur', () => {
         validateField('userPhone', 'phoneError', validatePhone);
+        validateAllFields();
+    });
+
+    // Обработчик события ввода для поля email
+    document.getElementById('userEmail').addEventListener('input', () => {
+        const emailField = document.getElementById('userEmail');
+        const emailError = document.getElementById('emailError');
+
+        // Скрываем ошибку и убираем класс ошибки при вводе
+        emailError.style.display = 'none';
+        emailField.classList.remove('error');
+
+        // Вызываем функцию для проверки всех полей
+        validateAllFields();
+    });
+
+    // Обработчик события потери фокуса для поля email
+    document.getElementById('userEmail').addEventListener('blur', () => {
+        handleFieldValidation('userEmail', 'emailError', validateEmail);
         validateAllFields();
     });
 
@@ -121,6 +121,9 @@ export function setupEventHandlers() {
         sqftError.style.display = 'none';
         sqftField.classList.remove('error');
 
+        // Вызываем функцию для расчета длины плинтуса
+        calculateBaseboardLength();
+
         // Вызываем функцию для проверки всех полей
         validateAllFields();
     });
@@ -131,28 +134,34 @@ export function setupEventHandlers() {
         validateAllFields(); // Добавляем вызов
     });
 
-// Обработчик события изменения чекбокса для плинтуса
+    // Обработчик события изменения чекбокса для плинтуса
     document.getElementById('hasBaseboard').addEventListener('change', () => {
         calculateBaseboardLength();
         validateAllFields(); // Добавляем вызов
     });
 
-// Обработчик события изменения чекбокса для лестниц
+    // Обработчик события изменения чекбокса для лестниц
     document.getElementById('hasStairs').addEventListener('change', () => {
         toggleStairsField();
         validateAllFields(); // Добавляем вызов
     });
 
-// Обработчик события изменения выбора материала
+    // Обработчик события изменения выбора материала
     document.getElementById('material').addEventListener('change', () => {
         handleMaterialSelection();
         validateAllFields(); // Добавляем вызов
     });
 
-// Обработчик события изменения поля sqft
-    document.getElementById('sqft').addEventListener('input', () => {
-        calculateBaseboardLength();
-        validateAllFields(); // Добавляем вызов
+    // Обработчик события изменения чекбокса для ступеней
+    document.getElementById('hasStairs').addEventListener('change', () => {
+        toggleStairsField();
+        validateAllFields();
+    });
+
+    // Обработчик события изменения поля количества ступеней
+    document.getElementById('stairCount').addEventListener('input', () => {
+        handleFieldValidation('stairCount', 'stairCountError', validateStairCount);
+        validateAllFields();
     });
 }
 
@@ -164,15 +173,15 @@ function fillMockData() {
     document.getElementById('userPhone').value = '1234567890';
     document.getElementById('userEmail').value = 'johndoe@example.com';
     document.getElementById('userZip').value = '12345';
-    // document.getElementById('sqft').value = '1500';
+    document.getElementById('sqft').value = '1500';
 
     // Заполняем поле "What type of floor do you need to remove?"
-    // const demoTypeSelect = document.getElementById('demoType');
-    // demoTypeSelect.value = '2.5'; // Выбираем "Tile" (значение 2.5)
+    const demoTypeSelect = document.getElementById('demoType');
+    demoTypeSelect.value = '2.5'; // Выбираем "Tile" (значение 2.5)
 
     // Заполняем поле "What type of the flooring material do you need to install?"
-    // const materialSelect = document.getElementById('material');
-    // materialSelect.value = 'vinyl'; // Выбираем "Luxury Vinyl Plank"
+    const materialSelect = document.getElementById('material');
+    materialSelect.value = 'vinyl'; // Выбираем "Luxury Vinyl Plank"
 
     // Вызываем обработчик изменения для материала, чтобы показать соответствующие опции
     handleMaterialSelection();
