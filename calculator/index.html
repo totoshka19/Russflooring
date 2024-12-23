@@ -45,13 +45,13 @@
 			<div id="demoError" class="error-message">Please select a floor type.</div>
 			
 			<label>
-				<input type="checkbox" id="hasBaseboard" onchange="calculateBaseboardLength()">
+				<input type="checkbox" id="hasBaseboard">
 				Do you need baseboard replacement? <span>(If yes, please click on checkbox)</span>
 			</label>
 			<div id="baseboardLengthResult" class="result hidden">Approximate Baseboard Length: <span id="baseboardLength">0</span> linear feet</div>
 			
 			<label for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span>:</label>
-			<select id="material" onchange="handleMaterialSelection()" required>
+			<select id="material" required>
 				<option value="">Select flooring material</option>
 				<option value="vinyl">Luxury Vinyl Plank</option>
 				<option value="laminate">Laminate</option>
@@ -94,7 +94,7 @@
 			</div>
 			
 			<label>
-				<input type="checkbox" id="hasStairs" onchange="toggleStairsField()">
+				<input type="checkbox" id="hasStairs">
 				Do you have stairs? <span>(If yes, please click on checkbox)</span>
 			</label>
 			<div id="stairsField" class="hidden">
