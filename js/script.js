@@ -1,14 +1,19 @@
 // script.js
-import { validateName, validatePhone, validateEmail, validateZip } from './validation.js';
+import { validateName, validatePhone, validateEmail, validateZip, validateSqft } from './validation.js';
+import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('costCalculator');
 
-  const fields = {
+  const userDataFields = {
     userName: { input: document.getElementById('userName'), error: document.getElementById('nameError') },
     userPhone: { input: document.getElementById('userPhone'), error: document.getElementById('phoneError') },
     userEmail: { input: document.getElementById('userEmail'), error: document.getElementById('emailError') },
     userZip: { input: document.getElementById('userZip'), error: document.getElementById('zipError') },
+  };
+
+  const optionsFields = {
+    sqft: { input: document.getElementById('sqft'), error: document.getElementById('sqftError') },
   };
 
   const dependentFields = [
@@ -29,10 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"
   ];
 
-  const tooltip = document.createElement('div');
-  tooltip.className = 'tooltip';
-  tooltip.textContent = 'Please fill in the contact details first.';
-  document.body.appendChild(tooltip);
+  // Создаем tooltip
+  const tooltip = createTooltip('Please fill in the contact details first.');
 
   const validateUserData = (field) => {
     switch (field.input.id) {
@@ -49,8 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const validateOptionsData = (field) => {
+    switch (field.input.id) {
+      case 'sqft':
+        return validateSqft(field.input, field.error);
+      default:
+        return true;
+    }
+  };
+
   const validateForm = () => {
-    return Object.values(fields).every(validateUserData);
+    return Object.values(userDataFields).every(validateUserData);
   };
 
   const toggleDependentFields = (isEnabled) => {
@@ -68,52 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Показываем подсказку при попытке взаимодействия с недоступными полями или надписями
-  const showTooltip = (event) => {
-    if (event.target.disabled || event.target.classList.contains('disabled')) {
-      const formRect = form.getBoundingClientRect(); // Получаем границы формы
-      const tooltipWidth = tooltip.offsetWidth; // Ширина подсказки
-      const tooltipHeight = tooltip.offsetHeight; // Высота подсказки
-
-      let tooltipX = event.pageX + 10; // Позиция X подсказки
-      let tooltipY = event.pageY + 10; // Позиция Y подсказки
-
-      // Проверяем, не выходит ли подсказка за правую границу формы
-      if (tooltipX + tooltipWidth > formRect.right) {
-        tooltipX = formRect.right - tooltipWidth - 10;
-      }
-
-      // Проверяем, не выходит ли подсказка за нижнюю границу формы
-      if (tooltipY + tooltipHeight > formRect.bottom) {
-        tooltipY = formRect.bottom - tooltipHeight - 10;
-      }
-
-      // Проверяем, не выходит ли подсказка за левую границу формы
-      if (tooltipX < formRect.left) {
-        tooltipX = formRect.left + 10;
-      }
-
-      // Проверяем, не выходит ли подсказка за верхнюю границу формы
-      if (tooltipY < formRect.top) {
-        tooltipY = formRect.top + 10;
-      }
-
-      tooltip.style.left = `${tooltipX}px`;
-      tooltip.style.top = `${tooltipY}px`;
-      tooltip.classList.add('visible');
-    }
-  };
-
-  // Скрываем подсказку, когда курсор уходит с поля или надписи
-  const hideTooltip = () => {
-    tooltip.classList.remove('visible');
-  };
-
   // Делегирование событий
   form.addEventListener('input', (event) => {
-    const field = fields[event.target.id];
-    if (field) {
-      validateUserData(field);
+    const userField = userDataFields[event.target.id];
+    const optionsField = optionsFields[event.target.id];
+
+    if (userField) {
+      validateUserData(userField);
+    }
+
+    if (optionsField) {
+      validateOptionsData(optionsField);
     }
 
     // Проверяем, прошла ли форма валидацию
@@ -126,13 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Добавляем обработчики для показа подсказки
   dependentFields.forEach((field) => {
-    field.addEventListener('mouseenter', showTooltip);
-    field.addEventListener('mouseleave', hideTooltip);
+    field.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
+    field.addEventListener('mouseleave', () => hideTooltip(tooltip));
   });
 
   // Добавляем обработчики для надписей
   labels.forEach((label) => {
-    label.addEventListener('mouseenter', showTooltip);
-    label.addEventListener('mouseleave', hideTooltip);
+    label.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
+    label.addEventListener('mouseleave', () => hideTooltip(tooltip));
   });
 });
