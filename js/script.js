@@ -19,60 +19,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Создаем tooltip
   const tooltip = createTooltip('Please fill in the contact details first.');
 
-  const validateUserData = (field) => {
-    switch (field.input.id) {
-      case 'userName':
-        return validateName(field.input, field.error);
-      case 'userPhone':
-        return validatePhone(field.input, field.error);
-      case 'userEmail':
-        return validateEmail(field.input, field.error);
-      case 'userZip':
-        return validateZip(field.input, field.error);
-      default:
-        return true;
-    }
+  // Объект с функциями валидации
+  const validateFields = {
+    userName: (field) => validateName(field.input, field.error),
+    userPhone: (field) => validatePhone(field.input, field.error),
+    userEmail: (field) => validateEmail(field.input, field.error),
+    userZip: (field) => validateZip(field.input, field.error),
+    sqft: (field) => validateSqft(field.input, field.error),
   };
 
-  const validateOptionsData = (field) => {
-    switch (field.input.id) {
-      case 'sqft':
-        return validateSqft(field.input, field.error);
-      default:
-        return true;
-    }
-  };
+  // Функция для валидации формы
+  const validateForm = () => Object.values(userDataFields).every((field) => validateFields[field.input.id](field));
 
-  const validateForm = () => {
-    return Object.values(userDataFields).every(validateUserData);
-  };
-
+  // Функция для включения/отключения зависимых полей
   const toggleDependentFields = (isEnabled) => {
-    dependentFields.forEach((field) => {
-      field.disabled = !isEnabled;
-    });
-
-    // Блокируем или разблокируем надписи
-    labels.forEach((label) => {
-      if (isEnabled) {
-        label.classList.remove('disabled');
-      } else {
-        label.classList.add('disabled');
-      }
-    });
+    dependentFields.forEach((field) => (field.disabled = !isEnabled));
+    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled));
   };
 
   // Делегирование событий
   form.addEventListener('input', (event) => {
-    const userField = userDataFields[event.target.id];
-    const optionsField = optionsFields[event.target.id];
+    const field = userDataFields[event.target.id] || optionsFields[event.target.id];
 
-    if (userField) {
-      validateUserData(userField);
-    }
-
-    if (optionsField) {
-      validateOptionsData(optionsField);
+    if (field) {
+      validateFields[field.input.id](field);
     }
 
     // Проверяем, прошла ли форма валидацию
@@ -92,35 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
     field.addEventListener('mouseleave', () => hideTooltip(tooltip));
   });
 
-  // Добавляем обработчики для надписей
-  labels.forEach((label) => {
-    label.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
-    label.addEventListener('mouseleave', () => hideTooltip(tooltip));
-  });
-
   // Добавляем обработчик для чекбокса "Do you need baseboard replacement?"
   const hasBaseboardCheckbox = document.getElementById('hasBaseboard');
   const sqftInput = document.getElementById('sqft');
   const baseboardLengthResult = document.getElementById('baseboardLengthResult');
   const baseboardLengthSpan = document.getElementById('baseboardLength');
 
+  // Функция для расчета длины плинтусов
   const calculateBaseboardLength = () => {
     const sqft = parseFloat(sqftInput.value);
-
-    // Логирование для отладки
-    console.log('calculateBaseboardLength called');
-    console.log('sqftInput.value:', sqftInput.value);
-    console.log('sqft:', sqft);
-    console.log('hasBaseboardCheckbox.checked:', hasBaseboardCheckbox.checked);
-    console.log('optionsFields.sqft.error.style.display:', optionsFields.sqft.error.style.display);
 
     // Проверяем, что sqft валидное число, больше нуля, и ошибка валидации скрыта
     const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none';
 
-    console.log('isSqftValid:', isSqftValid);
-
     if (!isSqftValid || !hasBaseboardCheckbox.checked) {
-      console.log('Condition failed: hiding baseboard length');
       baseboardLengthResult.classList.add('hidden');
       return;
     }
@@ -128,8 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const baseboardLength = 2 * (Math.sqrt(sqft) * 2 + 100);
     baseboardLengthSpan.textContent = baseboardLength.toFixed(2);
     baseboardLengthResult.classList.remove('hidden');
-
-    console.log('Baseboard length calculated:', baseboardLength.toFixed(2));
   };
 
   // Функция для обновления состояния текста Approximate Baseboard Length
@@ -141,15 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Обработчик изменения чекбокса
-  hasBaseboardCheckbox.addEventListener('change', () => {
-    updateBaseboardLength();
-  });
-
-  // Обработчик изменения поля sqft
-  sqftInput.addEventListener('input', () => {
-    updateBaseboardLength();
-  });
+  // Обработчик изменения чекбокса и поля sqft
+  const handleBaseboardChange = () => updateBaseboardLength();
+  hasBaseboardCheckbox.addEventListener('change', handleBaseboardChange);
+  sqftInput.addEventListener('input', handleBaseboardChange);
 
   // Изначально скрываем текст, если чекбокс не отмечен или sqft пустое
   updateBaseboardLength();
