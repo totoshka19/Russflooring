@@ -1,38 +1,21 @@
 // script.js
 import { validateName, validatePhone, validateEmail, validateZip, validateSqft } from './validation.js';
 import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
+import {
+  getForm,
+  getUserDataFields,
+  getOptionsFields,
+  getDependentFields,
+  getLabels,
+} from './dom.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('costCalculator');
+  const form = getForm();
 
-  const userDataFields = {
-    userName: { input: document.getElementById('userName'), error: document.getElementById('nameError') },
-    userPhone: { input: document.getElementById('userPhone'), error: document.getElementById('phoneError') },
-    userEmail: { input: document.getElementById('userEmail'), error: document.getElementById('emailError') },
-    userZip: { input: document.getElementById('userZip'), error: document.getElementById('zipError') },
-  };
-
-  const optionsFields = {
-    sqft: { input: document.getElementById('sqft'), error: document.getElementById('sqftError') },
-  };
-
-  const dependentFields = [
-    document.getElementById('sqft'),
-    document.getElementById('demoType'),
-    document.getElementById('material'),
-    document.getElementById('vinylOption'),
-    document.getElementById('laminateOption'),
-    document.getElementById('hardwoodOption'),
-    document.getElementById('installationType'),
-    document.getElementById('stairCount'),
-    document.getElementById('hasBaseboard'), // Добавлено поле "Do you need baseboard replacement"
-    document.getElementById('hasStairs'),    // Добавлено поле "Do you have stairs"
-  ];
-
-  const labels = [
-    document.querySelector('label[for="hasBaseboard"]'), // Надпись для "Do you need baseboard replacement?"
-    document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"
-  ];
+  const userDataFields = getUserDataFields();
+  const optionsFields = getOptionsFields();
+  const dependentFields = getDependentFields();
+  const labels = getLabels();
 
   // Создаем tooltip
   const tooltip = createTooltip('Please fill in the contact details first.');
