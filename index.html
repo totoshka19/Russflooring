@@ -8,30 +8,29 @@
 		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
-		<h1>Construction Cost Calculator</h1>
 		
 		<form id="costCalculator">
-			<label for="userName">Name<span class="required-marker">*</span>:</label>
+			<label for="userName">Name:<span class="required-marker">*</span></label>
 			<input type="text" id="userName" placeholder="Enter your name" maxlength="30" pattern="[A-Za-z\s]+" title="Name should only contain letters and spaces." required>
 			<div id="nameError" class="error-message">Please enter a valid name (letters and spaces only).</div>
 			
-			<label for="userPhone">Phone Number<span class="required-marker">*</span>:</label>
+			<label for="userPhone">Phone Number:<span class="required-marker">*</span></label>
 			<input type="tel" id="userPhone" placeholder="Enter your phone number" maxlength="10" pattern="[0-9]{10}" title="Phone number must be 10 digits." required>
 			<div id="phoneError" class="error-message">Phone number must be 10 digits.</div>
 			
-			<label for="userEmail">Email Address<span class="required-marker">*</span>:</label>
+			<label for="userEmail">Email Address:<span class="required-marker">*</span></label>
 			<input type="email" id="userEmail" placeholder="Enter your email" title="Enter a valid email address." required>
 			<div id="emailError" class="error-message">Please enter a valid email address.</div>
 			
-			<label for="userZip">Zip Code<span class="required-marker">*</span>:</label>
+			<label for="userZip">Zip Code:<span class="required-marker">*</span></label>
 			<input type="text" id="userZip" placeholder="Enter your zip code" maxlength="5" pattern="[0-9]{5}" title="Zip code must be 5 digits." required>
 			<div id="zipError" class="error-message">Zip code must be 5 digits.</div>
 			
-			<label for="sqft">How many sqft do you have?<span class="required-marker">*</span>:</label>
+			<label for="sqft">How many sqft do you have?<span class="required-marker">*</span></label>
 			<input type="number" id="sqft" placeholder="Enter approximate sqft" min="100" max="10000" required>
 			<div id="sqftError" class="error-message">Square footage must be between 100 and 10,000.</div>
 			
-			<label for="demoType">What type of floor do you need to remove?<span class="required-marker">*</span>:</label>
+			<label for="demoType">What type of floor do you need to remove?<span class="required-marker">*</span></label>
 			<select id="demoType" required>
 				<option value="" disabled selected hidden>Select a floor type</option>
 				<option value="1">Carpet</option>
@@ -44,13 +43,13 @@
 			</select>
 			<div id="demoError" class="error-message">Select a floor type.</div>
 			
-			<label class="checkbox-label">
+			<label class="checkbox-label" for="hasBaseboard">
 				<input type="checkbox" id="hasBaseboard" class="checkbox-input">
 				Do you need baseboard replacement? <span class="checkbox-hint">(If yes, please click on checkbox)</span>
 			</label>
 			<div id="baseboardLengthResult" class="result hidden">Approximate Baseboard Length: <span id="baseboardLength">0</span> linear feet</div>
 			
-			<label for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span>:</label>
+			<label class="material-label" for="material">What type of the flooring material do you need to install?<span class="required-marker">*</span></label>
 			<select id="material" required>
 				<option value="" disabled selected hidden>Select flooring material</option>
 				<option value="vinyl">Luxury Vinyl Plank</option>
@@ -60,7 +59,7 @@
 			</select>
 			
 			<div id="vinylOptions" class="hidden">
-				<label for="vinylOption">Choose Vinyl Option<span class="required-marker">*</span>:</label>
+				<label for="vinylOption">Choose Vinyl Option:<span class="required-marker">*</span></label>
 				<select id="vinylOption" required>
 					<option value="1.49">Luxury Vinyl 5.5 mm</option>
 					<option value="1.89">Luxury Vinyl 6.5 mm</option>
@@ -85,7 +84,7 @@
 			</div>
 			
 			<div id="installationOnlyOptions" class="hidden">
-				<label for="installationType">What type of material do you need to install?<span class="required-marker">*</span>:</label>
+				<label for="installationType">What type of material do you need to install?<span class="required-marker">*</span></label>
 				<select id="installationType" required>
 					<option value="2.25">Luxury Vinyl Plank</option>
 					<option value="2.25">Laminate</option>
@@ -93,20 +92,22 @@
 				</select>
 			</div>
 			
-			<label class="checkbox-label">
+			<label class="checkbox-label" for="hasStairs">
 				<input type="checkbox" id="hasStairs" class="checkbox-input">
 				Do you have stairs? <span class="checkbox-hint">(If yes, please click on checkbox)</span>
 			</label>
 			<div id="stairsField" class="hidden">
-				<label for="stairCount">Number of stairs:<span class="required-marker">*</span></label>
+				<label class="stairCount" for="stairCount">Number of stairs:<span class="required-marker">*</span></label>
 				<input type="number" id="stairCount" placeholder="Enter number of stairs" min="1" max="25" required>
 				<div id="stairCountError" class="error-message hidden">Please enter a number between 1 and 25</div>
 			</div>
 			
-			<button id="submitButton" type="button" disabled>Proceed</button>
-			<div id="totalCost" class="result hidden">Total Cost: $<span id="costAmount">0</span></div>
+			<button id="submitButton" type="button" disabled>CALCULATE</button>
+			<div id="totalCost" class="result hidden">Your estimated project cost: $<span id="costAmount">0</span></div>
 		</form>
 		
-		<script type="module" src="script.js"></script>
+		<script type="module" src="js/script.js"></script>
+		
+<!--		<script type="module" src="script.js"></script>-->
 	</body>
 </html>

@@ -147,7 +147,7 @@ export function calculateTotalCost() {
   // Рассчитываем стоимость плинтуса
   const baseboardCost = hasBaseboard ? sqft * 0.5 : 0;
   // Рассчитываем стоимость лестницы
-  const stairCost = stairsCount > 0 ? stairsCount * 50 : 0;
+  const stairCost = stairsCount > 0 ? stairsCount * 100 : 0;
 
   // Рассчитываем общую стоимость
   const totalCost = (sqft * (demoTypeValue + materialCost)) + baseboardCost + stairCost;

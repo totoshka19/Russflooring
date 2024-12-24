@@ -43,29 +43,16 @@ export function setupEventHandlers() {
         validateAllFields();
     });
 
-    // Обработчик события ввода для поля телефона
+// Обработчик события ввода для поля телефона
     document.getElementById('userPhone').addEventListener('input', () => {
-        const phoneField = document.getElementById('userPhone');
-        const phoneError = document.getElementById('phoneError');
-        const phoneValue = phoneField.value.trim();
-
-        // Проверяем, что значение соответствует формату номера телефона
-        if (/^[0-9]{0,10}$/.test(phoneValue)) {
-            phoneError.style.display = 'none';
-            phoneField.classList.remove('error');
-        } else {
-            phoneError.style.display = 'block';
-            phoneField.classList.add('error');
-        }
-
-        // Вызываем функцию для проверки всех полей
-        validateAllFields();
+        // Используем функцию validateField для валидации поля
+        validateField('userPhone', 'phoneError', validatePhone);
     });
 
-    // Обработчик события потери фокуса для поля телефона
+// Обработчик события потери фокуса для поля телефона
     document.getElementById('userPhone').addEventListener('blur', () => {
+        // Используем функцию validateField для валидации поля
         validateField('userPhone', 'phoneError', validatePhone);
-        validateAllFields();
     });
 
     // Обработчик события ввода для поля email
