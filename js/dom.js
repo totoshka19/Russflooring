@@ -29,6 +29,11 @@ export const getDependentFields = () => [
   getElementById('hasStairs'),    // Добавлено поле "Do you have stairs"
   getElementById('baseboardLengthResult'),
   getElementById('baseboardLength'),
+  getElementById('material'),
+  getElementById('vinylOptions'),
+  getElementById('laminateOptions'),
+  getElementById('hardwoodOptions'),
+  getElementById('installationOnlyOptions'),
 ];
 
 export const getLabels = () => [

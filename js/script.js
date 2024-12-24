@@ -8,6 +8,7 @@ import {
   getLabels,
 } from './dom.js';
 import { calculateBaseboardLength } from './calculations.js'; // Импорт функции расчета длины плинтусов
+import { toggleMaterialOptions } from './materialOptions.js'; // Импорт функции для показа/скрытия опций
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = getForm();
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sqftInput = optionsFields.sqft.input;
   const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult');
   const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength');
+  const materialSelect = dependentFields.find((field) => field.id === 'material');
 
   // Функция для расчета длины плинтусов
   const calculateBaseboardLengthWrapper = () => {
@@ -102,4 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Изначально скрываем текст, если чекбокс не отмечен или sqft пустое
   updateBaseboardLength();
+
+  // Обработчик изменения выбора материала
+  materialSelect.addEventListener('change', (event) => {
+    const selectedMaterial = event.target.value;
+    toggleMaterialOptions(selectedMaterial); // Используем функцию из materialOptions.js
+  });
+
+  // Изначально скрываем все дополнительные опции
+  toggleMaterialOptions('');
 });
