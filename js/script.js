@@ -78,6 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Проверяем, прошла ли форма валидацию
     const isFormValid = validateForm();
     toggleDependentFields(isFormValid);
+
+    // Обновляем состояние текста Approximate Baseboard Length
+    updateBaseboardLength();
   });
 
   // Изначально блокируем зависимые поля и надписи
@@ -103,7 +106,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const calculateBaseboardLength = () => {
     const sqft = parseFloat(sqftInput.value);
-    if (isNaN(sqft) || sqft <= 0) {
+
+    // Логирование для отладки
+    console.log('calculateBaseboardLength called');
+    console.log('sqftInput.value:', sqftInput.value);
+    console.log('sqft:', sqft);
+    console.log('hasBaseboardCheckbox.checked:', hasBaseboardCheckbox.checked);
+    console.log('optionsFields.sqft.error.style.display:', optionsFields.sqft.error.style.display);
+
+    // Проверяем, что sqft валидное число, больше нуля, и ошибка валидации скрыта
+    const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none';
+
+    console.log('isSqftValid:', isSqftValid);
+
+    if (!isSqftValid || !hasBaseboardCheckbox.checked) {
+      console.log('Condition failed: hiding baseboard length');
       baseboardLengthResult.classList.add('hidden');
       return;
     }
@@ -111,19 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const baseboardLength = 2 * (Math.sqrt(sqft) * 2 + 100);
     baseboardLengthSpan.textContent = baseboardLength.toFixed(2);
     baseboardLengthResult.classList.remove('hidden');
+
+    console.log('Baseboard length calculated:', baseboardLength.toFixed(2));
   };
 
-  hasBaseboardCheckbox.addEventListener('change', () => {
+  // Функция для обновления состояния текста Approximate Baseboard Length
+  const updateBaseboardLength = () => {
     if (hasBaseboardCheckbox.checked) {
       calculateBaseboardLength();
     } else {
       baseboardLengthResult.classList.add('hidden');
     }
+  };
+
+  // Обработчик изменения чекбокса
+  hasBaseboardCheckbox.addEventListener('change', () => {
+    updateBaseboardLength();
   });
 
+  // Обработчик изменения поля sqft
   sqftInput.addEventListener('input', () => {
-    if (hasBaseboardCheckbox.checked) {
-      calculateBaseboardLength();
-    }
+    updateBaseboardLength();
   });
+
+  // Изначально скрываем текст, если чекбокс не отмечен или sqft пустое
+  updateBaseboardLength();
 });
