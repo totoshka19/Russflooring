@@ -1,4 +1,3 @@
-// script.js
 import { validateName, validatePhone, validateEmail, validateZip, validateSqft } from './validation.js';
 import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
 import {
@@ -94,5 +93,37 @@ document.addEventListener('DOMContentLoaded', () => {
   labels.forEach((label) => {
     label.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
     label.addEventListener('mouseleave', () => hideTooltip(tooltip));
+  });
+
+  // Добавляем обработчик для чекбокса "Do you need baseboard replacement?"
+  const hasBaseboardCheckbox = document.getElementById('hasBaseboard');
+  const sqftInput = document.getElementById('sqft');
+  const baseboardLengthResult = document.getElementById('baseboardLengthResult');
+  const baseboardLengthSpan = document.getElementById('baseboardLength');
+
+  const calculateBaseboardLength = () => {
+    const sqft = parseFloat(sqftInput.value);
+    if (isNaN(sqft) || sqft <= 0) {
+      baseboardLengthResult.classList.add('hidden');
+      return;
+    }
+
+    const baseboardLength = 2 * (Math.sqrt(sqft) * 2 + 100);
+    baseboardLengthSpan.textContent = baseboardLength.toFixed(2);
+    baseboardLengthResult.classList.remove('hidden');
+  };
+
+  hasBaseboardCheckbox.addEventListener('change', () => {
+    if (hasBaseboardCheckbox.checked) {
+      calculateBaseboardLength();
+    } else {
+      baseboardLengthResult.classList.add('hidden');
+    }
+  });
+
+  sqftInput.addEventListener('input', () => {
+    if (hasBaseboardCheckbox.checked) {
+      calculateBaseboardLength();
+    }
   });
 });
