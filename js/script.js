@@ -7,6 +7,7 @@ import {
   getDependentFields,
   getLabels,
 } from './dom.js';
+import { calculateBaseboardLength } from './calculations.js'; // Импорт функции расчета длины плинтусов
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = getForm();
@@ -62,14 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
     field.addEventListener('mouseleave', () => hideTooltip(tooltip));
   });
 
-  // Добавляем обработчик для чекбокса "Do you need baseboard replacement?"
-  const hasBaseboardCheckbox = document.getElementById('hasBaseboard');
-  const sqftInput = document.getElementById('sqft');
-  const baseboardLengthResult = document.getElementById('baseboardLengthResult');
-  const baseboardLengthSpan = document.getElementById('baseboardLength');
+  // Получаем элементы через dom.js
+  const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard');
+  const sqftInput = optionsFields.sqft.input;
+  const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult');
+  const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength');
 
   // Функция для расчета длины плинтусов
-  const calculateBaseboardLength = () => {
+  const calculateBaseboardLengthWrapper = () => {
     const sqft = parseFloat(sqftInput.value);
 
     // Проверяем, что sqft валидное число, больше нуля, и ошибка валидации скрыта
@@ -80,15 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const baseboardLength = 2 * (Math.sqrt(sqft) * 2 + 100);
-    baseboardLengthSpan.textContent = baseboardLength.toFixed(2);
+    // Используем функцию из calculations.js для расчета длины плинтусов
+    baseboardLengthSpan.textContent = calculateBaseboardLength(sqft);
     baseboardLengthResult.classList.remove('hidden');
   };
 
   // Функция для обновления состояния текста Approximate Baseboard Length
   const updateBaseboardLength = () => {
     if (hasBaseboardCheckbox.checked) {
-      calculateBaseboardLength();
+      calculateBaseboardLengthWrapper();
     } else {
       baseboardLengthResult.classList.add('hidden');
     }

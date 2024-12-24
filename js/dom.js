@@ -27,6 +27,8 @@ export const getDependentFields = () => [
   getElementById('stairCount'),
   getElementById('hasBaseboard'), // Добавлено поле "Do you need baseboard replacement"
   getElementById('hasStairs'),    // Добавлено поле "Do you have stairs"
+  getElementById('baseboardLengthResult'),
+  getElementById('baseboardLength'),
 ];
 
 export const getLabels = () => [
