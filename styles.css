@@ -1,3 +1,4 @@
+/* Основные стили */
 body {
     font-family: 'Bai Jamjuree', sans-serif;
     max-width: 600px;
@@ -17,6 +18,7 @@ label {
     margin-left: 5px;
 }
 
+/* Общие стили для input, select, button */
 input, select, button {
     display: block;
     margin-bottom: 20px;
@@ -28,12 +30,10 @@ input, select, button {
     box-sizing: border-box;
 }
 
+/* Стили для select */
 select {
     appearance: none;
-    background-color: white;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="gray" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 12px center;
+    background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="gray" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 12px center;
     padding-right: 35px;
     cursor: pointer;
 }
@@ -54,10 +54,12 @@ select option {
     color: black;
 }
 
+/* Ошибка в input или select */
 input.error, select.error {
     border-color: red;
 }
 
+/* Убираем стрелки в input[type="number"] */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -68,14 +70,15 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+/* Сообщение об ошибке */
 .error-message {
     color: red;
     font-size: 0.9rem;
-    margin-top: -8px;
-    margin-bottom: 10px;
+    margin: -8px 0 10px;
     display: none;
 }
 
+/* Кнопка */
 button {
     background-color: #1ec2dd;
     color: white;
@@ -94,17 +97,19 @@ button:hover:not(:disabled) {
     background-color: #17a5bf;
 }
 
+/* Результат */
 .result {
-    margin-top: 8px;
-    margin-bottom: 20px;
+    margin: 8px 0 20px;
     font-size: 1.2rem;
     font-weight: bold;
 }
 
+/* Скрытые элементы */
 .hidden {
     display: none;
 }
 
+/* Чекбокс */
 .checkbox-label {
     display: inline;
     cursor: pointer;
@@ -126,32 +131,34 @@ button:hover:not(:disabled) {
     color: #666;
 }
 
+/* Материал */
 .material-label {
     margin-top: 20px;
 }
 
+/* Кнопка отправки */
 #submitButton {
     margin-top: 20px;
 }
 
+/* Количество ступеней */
 .stairCount {
-    margin-top: 8px;
-    margin-bottom: 20px;
+    margin: 8px 0 20px;
 }
 
-/* Добавляем стили для недоступных полей */
+/* Недоступные поля */
 input:disabled,
 select:disabled,
 .checkbox-input:disabled {
-    cursor: not-allowed; /* Изменяем курсор на "не разрешено" */
-    background-color: #f0f0f0; /* Серый фон для недоступных полей */
+    cursor: not-allowed;
+    background-color: #f0f0f0;
 }
 
 .checkbox-label.disabled {
-    cursor: not-allowed; /* Изменяем курсор на "не разрешено" */
+    cursor: not-allowed;
 }
 
-/* Стили для всплывающей подсказки */
+/* Всплывающая подсказка */
 .tooltip {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.8);
@@ -163,7 +170,7 @@ select:disabled,
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
     z-index: 1000;
-    white-space: nowrap; /* Чтобы текст не переносился */
+    white-space: nowrap;
 }
 
 .tooltip.visible {
