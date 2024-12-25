@@ -7,7 +7,7 @@ import {
   getDependentFields,
   getLabels,
 } from './dom.js';
-import { calculateBaseboardLength } from './calculations.js';
+import { calculateBaseboardLength, calculateTotalCost } from './calculations.js'; // Импортируем calculateTotalCost
 import { toggleMaterialOptions } from './materialOptions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Получаем кнопку CALCULATE
   const submitButton = document.getElementById('submitButton');
+
+  // Получаем элемент для отображения общей стоимости
+  const totalCostElement = document.getElementById('totalCost');
+  const costAmountElement = document.getElementById('costAmount');
 
   // Объект с функциями валидации для каждого поля
   const validateFields = {
@@ -92,6 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Обработчик изменения выбора материала
   const handleMaterialChange = (event) => toggleMaterialOptions(event.target.value);
+
+  // Обработчик нажатия на кнопку CALCULATE
+  submitButton.addEventListener('click', () => {
+    const totalCost = calculateTotalCost(); // Используем функцию из calculations.js
+    costAmountElement.textContent = totalCost;
+    totalCostElement.classList.remove('hidden');
+  });
 
   // Функция для обновления состояния кнопки CALCULATE
   const updateSubmitButton = () => {
