@@ -4,6 +4,7 @@ const REGEX = {
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Формат email
   ZIP: /^\d{5}$/,             // Ровно 5 цифр
   SQFT: /^\d+$/,              // Только целые числа
+  STAIR: /^\d{1,2}$/,         // Только целые числа (1-25)
 };
 
 const validateField = (input, errorElement, regex, minValue = null, maxValue = null) => {
@@ -50,4 +51,11 @@ export const validateSqft = (input, errorElement) => {
   const minValue = 100;
   const maxValue = 10000;
   return validateField(input, errorElement, REGEX.SQFT, minValue, maxValue);
+};
+
+// Валидация для поля stairs
+export const validateStair = (input, errorElement) => {
+  const minValue = 1;
+  const maxValue = 25;
+  return validateField(input, errorElement, REGEX.STAIR, minValue, maxValue);
 };

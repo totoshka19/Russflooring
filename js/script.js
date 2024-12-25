@@ -64,6 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     field.addEventListener('mouseleave', () => hideTooltip(tooltip));
   });
 
+  // Добавляем обработчики для показа подсказки на labels
+  labels.forEach((label) => {
+    label.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
+    label.addEventListener('mouseleave', () => hideTooltip(tooltip));
+  });
+
   // Получаем элементы через dom.js
   const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard');
   const sqftInput = optionsFields.sqft.input;
