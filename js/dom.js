@@ -14,6 +14,7 @@ export const getUserDataFields = () => ({
 
 export const getOptionsFields = () => ({
   sqft: { input: getElementById('sqft'), error: getElementById('sqftError') },
+  stairCount: { input: getElementById('stairCount'), error: getElementById('stairCountError') },
 });
 
 export const getDependentFields = () => [
@@ -36,6 +37,7 @@ export const getDependentFields = () => [
   getElementById('installationOnlyOptions'),
 ];
 
+// Функция для получения всех labels
 export const getLabels = () => [
   document.querySelector('label[for="hasBaseboard"]'), // Надпись для "Do you need baseboard replacement?"
   document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"

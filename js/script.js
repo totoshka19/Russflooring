@@ -1,4 +1,4 @@
-import { validateName, validatePhone, validateEmail, validateZip, validateSqft } from './validation.js';
+import { validateName, validatePhone, validateEmail, validateZip, validateSqft, validateStair } from './validation.js';
 import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
 import {
   getForm,
@@ -121,8 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleMaterialOptions('');
 
   // Находим чекбокс и элемент stairsField
+  const stairCountField = optionsFields.stairCount;
   const hasStairsCheckbox = document.getElementById('hasStairs');
   const stairsField = document.getElementById('stairsField');
+
+  // Валидация при вводе данных в поле stairCount
+  stairCountField.input.addEventListener('input', () => {
+    validateStair(stairCountField.input, stairCountField.error);
+  });
 
   // Добавляем обработчик события change на чекбокс
   hasStairsCheckbox.addEventListener('change', () => {
@@ -132,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       // Если чекбокс не отмечен, скрываем stairsField
       stairsField.classList.add('hidden');
+      stairCountField.error.style.display = 'none'; // Скрываем ошибку
     }
   });
 });
