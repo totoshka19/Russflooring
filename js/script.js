@@ -104,10 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
     totalCostElement.classList.remove('hidden');
   });
 
-  // Функция для обновления состояния кнопки CALCULATE
+  // Функция для обновления состояния кнопки CALCULATE и скрытия totalCost
   const updateSubmitButton = () => {
     const isFormValid = validateAllFields(); // Проверяем валидность всех обязательных полей
     submitButton.disabled = !isFormValid; // Активируем или деактивируем кнопку
+
+    // Если форма не валидна, скрываем поле totalCost
+    if (!isFormValid) {
+      totalCostElement.classList.add('hidden');
+    }
   };
 
   // Обработчик события input (ввод данных в поля формы)
@@ -123,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateBaseboardLength(); // Обновляем длину плинтуса
-    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE
+    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE и скрываем totalCost
+
+    // Скрываем totalCost при любом изменении данных
+    totalCostElement.classList.add('hidden');
   });
 
   // Обработчик события change (изменение состояния чекбоксов или выпадающих списков)
@@ -137,7 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
       stairsField.classList.toggle('hidden', !event.target.checked);
       if (!event.target.checked) optionsFields.stairCount.error.style.display = 'none';
     }
-    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE
+    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE и скрываем totalCost
+
+    // Скрываем totalCost при любом изменении данных
+    totalCostElement.classList.add('hidden');
   });
 
   // Обработчик события mouseover (наведение курсора на элемент)
@@ -161,4 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Изначально деактивируем кнопку CALCULATE
   submitButton.disabled = true;
+
+  // Изначально скрываем поле totalCost
+  totalCostElement.classList.add('hidden');
 });
