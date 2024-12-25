@@ -35,6 +35,7 @@ export const getDependentFields = () => [
   getElementById('laminateOptions'),
   getElementById('hardwoodOptions'),
   getElementById('installationOnlyOptions'),
+  getElementById('stairsField')
 ];
 
 // Функция для получения всех labels

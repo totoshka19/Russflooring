@@ -1,5 +1,10 @@
+// Импорт функций валидации из validation.js
 import { validateName, validatePhone, validateEmail, validateZip, validateSqft, validateStair } from './validation.js';
+
+// Импорт функций для работы с подсказками (tooltip) из tooltip.js
 import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
+
+// Импорт функций для работы с DOM из dom.js
 import {
   getForm,
   getUserDataFields,
@@ -7,138 +12,104 @@ import {
   getDependentFields,
   getLabels,
 } from './dom.js';
-import { calculateBaseboardLength } from './calculations.js'; // Импорт функции расчета длины плинтусов
-import { toggleMaterialOptions } from './materialOptions.js'; // Импорт функции для показа/скрытия опций
 
+// Импорт функции для расчета длины плинтусов из calculations.js
+import { calculateBaseboardLength } from './calculations.js';
+
+// Импорт функции для управления опциями материалов из materialOptions.js
+import { toggleMaterialOptions } from './materialOptions.js';
+
+// Ожидание загрузки DOM перед выполнением кода
 document.addEventListener('DOMContentLoaded', () => {
+  // Получение формы и её элементов
   const form = getForm();
+  const userDataFields = getUserDataFields(); // Поля пользовательских данных
+  const optionsFields = getOptionsFields();   // Поля опций
+  const dependentFields = getDependentFields(); // Зависимые поля
+  const labels = getLabels(); // Метки (labels) для зависимых полей
 
-  const userDataFields = getUserDataFields();
-  const optionsFields = getOptionsFields();
-  const dependentFields = getDependentFields();
-  const labels = getLabels();
-
-  // Создаем tooltip
+  // Создание подсказки (tooltip) с текстом
   const tooltip = createTooltip('Please fill in the contact details first.');
 
-  // Объект с функциями валидации
+  // Объект с функциями валидации для каждого поля
   const validateFields = {
-    userName: (field) => validateName(field.input, field.error),
-    userPhone: (field) => validatePhone(field.input, field.error),
-    userEmail: (field) => validateEmail(field.input, field.error),
-    userZip: (field) => validateZip(field.input, field.error),
-    sqft: (field) => validateSqft(field.input, field.error),
+    userName: (field) => validateName(field.input, field.error), // Валидация имени
+    userPhone: (field) => validatePhone(field.input, field.error), // Валидация телефона
+    userEmail: (field) => validateEmail(field.input, field.error), // Валидация email
+    userZip: (field) => validateZip(field.input, field.error), // Валидация почтового индекса
+    sqft: (field) => validateSqft(field.input, field.error), // Валидация площади (sqft)
+    stairCount: (field) => validateStair(field.input, field.error), // Валидация количества ступеней
   };
 
-  // Функция для валидации формы
+  // Функция для проверки валидности всей формы
   const validateForm = () => Object.values(userDataFields).every((field) => validateFields[field.input.id](field));
 
-  // Функция для включения/отключения зависимых полей
+  // Функция для включения/отключения зависимых полей и меток
   const toggleDependentFields = (isEnabled) => {
-    dependentFields.forEach((field) => (field.disabled = !isEnabled));
-    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled));
+    dependentFields.forEach((field) => (field.disabled = !isEnabled)); // Включение/отключение полей
+    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled)); // Включение/отключение меток
   };
 
-  // Делегирование событий
-  form.addEventListener('input', (event) => {
-    const field = userDataFields[event.target.id] || optionsFields[event.target.id];
-
-    if (field) {
-      validateFields[field.input.id](field);
-    }
-
-    // Проверяем, прошла ли форма валидацию
-    const isFormValid = validateForm();
-    toggleDependentFields(isFormValid);
-
-    // Обновляем состояние текста Approximate Baseboard Length
-    updateBaseboardLength();
-  });
-
-  // Изначально блокируем зависимые поля и надписи
-  toggleDependentFields(false);
-
-  // Добавляем обработчики для показа подсказки
-  dependentFields.forEach((field) => {
-    field.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
-    field.addEventListener('mouseleave', () => hideTooltip(tooltip));
-  });
-
-  // Добавляем обработчики для показа подсказки на labels
-  labels.forEach((label) => {
-    label.addEventListener('mouseenter', (event) => showTooltip(tooltip, event, form));
-    label.addEventListener('mouseleave', () => hideTooltip(tooltip));
-  });
-
-  // Получаем элементы через dom.js
-  const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard');
-  const sqftInput = optionsFields.sqft.input;
-  const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult');
-  const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength');
-  const materialSelect = dependentFields.find((field) => field.id === 'material');
-
-  // Функция для расчета длины плинтусов
-  const calculateBaseboardLengthWrapper = () => {
-    const sqft = parseFloat(sqftInput.value);
-
-    // Проверяем, что sqft валидное число, больше нуля, и ошибка валидации скрыта
-    const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none';
-
-    if (!isSqftValid || !hasBaseboardCheckbox.checked) {
-      baseboardLengthResult.classList.add('hidden');
-      return;
-    }
-
-    // Используем функцию из calculations.js для расчета длины плинтусов
-    baseboardLengthSpan.textContent = calculateBaseboardLength(sqft);
-    baseboardLengthResult.classList.remove('hidden');
-  };
-
-  // Функция для обновления состояния текста Approximate Baseboard Length
+  // Функция для обновления отображения длины плинтусов
   const updateBaseboardLength = () => {
-    if (hasBaseboardCheckbox.checked) {
-      calculateBaseboardLengthWrapper();
+    const sqft = parseFloat(optionsFields.sqft.input.value); // Получение значения площади
+    const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none'; // Проверка валидности sqft
+    const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard'); // Чекбокс "Нужен ли плинтус"
+    const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult'); // Элемент для отображения результата
+    const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength'); // Элемент для отображения длины плинтуса
+
+    // Если sqft валидно и чекбокс отмечен, обновляем результат
+    if (isSqftValid && hasBaseboardCheckbox.checked) {
+      baseboardLengthSpan.textContent = calculateBaseboardLength(sqft); // Расчет длины плинтуса
+      baseboardLengthResult.classList.remove('hidden'); // Показываем результат
     } else {
-      baseboardLengthResult.classList.add('hidden');
+      baseboardLengthResult.classList.add('hidden'); // Скрываем результат
     }
   };
 
-  // Обработчик изменения чекбокса и поля sqft
+  // Обработчик изменения состояния чекбокса или поля sqft
   const handleBaseboardChange = () => updateBaseboardLength();
-  hasBaseboardCheckbox.addEventListener('change', handleBaseboardChange);
-  sqftInput.addEventListener('input', handleBaseboardChange);
-
-  // Изначально скрываем текст, если чекбокс не отмечен или sqft пустое
-  updateBaseboardLength();
 
   // Обработчик изменения выбора материала
-  materialSelect.addEventListener('change', (event) => {
-    const selectedMaterial = event.target.value;
-    toggleMaterialOptions(selectedMaterial); // Используем функцию из materialOptions.js
+  const handleMaterialChange = (event) => toggleMaterialOptions(event.target.value);
+
+  // Обработчик события input (ввод данных в поля формы)
+  form.addEventListener('input', (event) => {
+    const field = userDataFields[event.target.id] || optionsFields[event.target.id]; // Получаем поле по ID
+    if (field) validateFields[field.input.id](field); // Валидируем поле
+    toggleDependentFields(validateForm()); // Включаем/отключаем зависимые поля
+    updateBaseboardLength(); // Обновляем длину плинтуса
   });
 
-  // Изначально скрываем все дополнительные опции
-  toggleMaterialOptions('');
-
-  // Находим чекбокс и элемент stairsField
-  const stairCountField = optionsFields.stairCount;
-  const hasStairsCheckbox = document.getElementById('hasStairs');
-  const stairsField = document.getElementById('stairsField');
-
-  // Валидация при вводе данных в поле stairCount
-  stairCountField.input.addEventListener('input', () => {
-    validateStair(stairCountField.input, stairCountField.error);
-  });
-
-  // Добавляем обработчик события change на чекбокс
-  hasStairsCheckbox.addEventListener('change', () => {
-    if (hasStairsCheckbox.checked) {
-      // Если чекбокс отмечен, показываем stairsField
-      stairsField.classList.remove('hidden');
-    } else {
-      // Если чекбокс не отмечен, скрываем stairsField
-      stairsField.classList.add('hidden');
-      stairCountField.error.style.display = 'none'; // Скрываем ошибку
+  // Обработчик события change (изменение состояния чекбоксов или выпадающих списков)
+  form.addEventListener('change', (event) => {
+    if (event.target.id === 'hasBaseboard' || event.target.id === 'sqft') {
+      handleBaseboardChange(); // Обновляем длину плинтуса
+    } else if (event.target.id === 'material') {
+      handleMaterialChange(event); // Управляем опциями материалов
+    } else if (event.target.id === 'hasStairs') {
+      const stairsField = dependentFields.find((field) => field.id === 'stairsField'); // Поле для ввода количества ступеней
+      stairsField.classList.toggle('hidden', !event.target.checked); // Показываем/скрываем поле
+      if (!event.target.checked) optionsFields.stairCount.error.style.display = 'none'; // Скрываем ошибку, если чекбокс не отмечен
     }
   });
+
+  // Обработчик события mouseover (наведение курсора на элемент)
+  form.addEventListener('mouseover', (event) => {
+    if (dependentFields.includes(event.target) || labels.includes(event.target)) {
+      showTooltip(tooltip, event, form); // Показываем подсказку
+    }
+  });
+
+  // Обработчик события mouseout (уход курсора с элемента)
+  form.addEventListener('mouseout', () => hideTooltip(tooltip)); // Скрываем подсказку
+
+  // Изначально блокируем зависимые поля и метки
+  toggleDependentFields(false);
+
+  // Изначально обновляем длину плинтуса
+  updateBaseboardLength();
+
+  // Изначально скрываем все дополнительные опции материалов
+  toggleMaterialOptions('');
 });
