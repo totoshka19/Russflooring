@@ -1,10 +1,5 @@
-// Импорт функций валидации из validation.js
 import { validateName, validatePhone, validateEmail, validateZip, validateSqft, validateStair } from './validation.js';
-
-// Импорт функций для работы с подсказками (tooltip) из tooltip.js
 import { createTooltip, showTooltip, hideTooltip } from './tooltip.js';
-
-// Импорт функций для работы с DOM из dom.js
 import {
   getForm,
   getUserDataFields,
@@ -12,58 +7,83 @@ import {
   getDependentFields,
   getLabels,
 } from './dom.js';
-
-// Импорт функции для расчета длины плинтусов из calculations.js
 import { calculateBaseboardLength } from './calculations.js';
-
-// Импорт функции для управления опциями материалов из materialOptions.js
 import { toggleMaterialOptions } from './materialOptions.js';
 
-// Ожидание загрузки DOM перед выполнением кода
 document.addEventListener('DOMContentLoaded', () => {
-  // Получение формы и её элементов
   const form = getForm();
-  const userDataFields = getUserDataFields(); // Поля пользовательских данных
-  const optionsFields = getOptionsFields();   // Поля опций
-  const dependentFields = getDependentFields(); // Зависимые поля
+  const userDataFields = getUserDataFields(); // Первые 4 поля (контактные данные)
+  const optionsFields = getOptionsFields();   // Поля опций (sqft, stairCount)
+  const dependentFields = getDependentFields(); // Зависимые поля (все остальные поля)
   const labels = getLabels(); // Метки (labels) для зависимых полей
-
-  // Создание подсказки (tooltip) с текстом
   const tooltip = createTooltip('Please fill in the contact details first.');
+
+  // Получаем кнопку CALCULATE
+  const submitButton = document.getElementById('submitButton');
 
   // Объект с функциями валидации для каждого поля
   const validateFields = {
-    userName: (field) => validateName(field.input, field.error), // Валидация имени
-    userPhone: (field) => validatePhone(field.input, field.error), // Валидация телефона
-    userEmail: (field) => validateEmail(field.input, field.error), // Валидация email
-    userZip: (field) => validateZip(field.input, field.error), // Валидация почтового индекса
-    sqft: (field) => validateSqft(field.input, field.error), // Валидация площади (sqft)
-    stairCount: (field) => validateStair(field.input, field.error), // Валидация количества ступеней
+    userName: (field) => validateName(field.input, field.error),
+    userPhone: (field) => validatePhone(field.input, field.error),
+    userEmail: (field) => validateEmail(field.input, field.error),
+    userZip: (field) => validateZip(field.input, field.error),
+    sqft: (field) => validateSqft(field.input, field.error),
+    stairCount: (field) => validateStair(field.input, field.error),
   };
 
-  // Функция для проверки валидности всей формы
-  const validateForm = () => Object.values(userDataFields).every((field) => validateFields[field.input.id](field));
+  // Функция для проверки валидности первых 4 полей (контактные данные)
+  const validateContactFields = () => {
+    return Object.values(userDataFields).every((field) => validateFields[field.input.id](field));
+  };
+
+  // Функция для проверки валидности всех обязательных полей
+  const validateAllFields = () => {
+    // Проверяем первые 4 поля (контактные данные)
+    const isContactFieldsValid = validateContactFields();
+    if (!isContactFieldsValid) return false; // Если первые 4 поля не валидны, форма не валидна
+
+    // Проверяем поле sqft
+    const isSqftValid = validateSqft(optionsFields.sqft.input, optionsFields.sqft.error);
+    if (!isSqftValid) return false; // Если поле sqft не валидно, форма не валидна
+
+    // Проверяем поле demoType
+    const demoTypeInput = document.getElementById('demoType');
+    if (!demoTypeInput.value) return false; // Если поле demoType не заполнено, форма не валидна
+
+    // Проверяем поле material
+    const materialInput = document.getElementById('material');
+    if (!materialInput.value) return false; // Если поле material не заполнено, форма не валидна
+
+    // Проверяем поле stairCount, если оно видимо
+    const stairsField = dependentFields.find((field) => field.id === 'stairsField');
+    if (!stairsField.classList.contains('hidden')) {
+      const isStairCountValid = validateStair(optionsFields.stairCount.input, optionsFields.stairCount.error);
+      if (!isStairCountValid) return false; // Если поле stairCount не валидно, форма не валидна
+    }
+
+    // Если все проверки пройдены, форма валидна
+    return true;
+  };
 
   // Функция для включения/отключения зависимых полей и меток
   const toggleDependentFields = (isEnabled) => {
-    dependentFields.forEach((field) => (field.disabled = !isEnabled)); // Включение/отключение полей
-    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled)); // Включение/отключение меток
+    dependentFields.forEach((field) => (field.disabled = !isEnabled)); // Включаем/отключаем поля
+    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled)); // Включаем/отключаем метки
   };
 
   // Функция для обновления отображения длины плинтусов
   const updateBaseboardLength = () => {
-    const sqft = parseFloat(optionsFields.sqft.input.value); // Получение значения площади
-    const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none'; // Проверка валидности sqft
-    const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard'); // Чекбокс "Нужен ли плинтус"
-    const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult'); // Элемент для отображения результата
-    const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength'); // Элемент для отображения длины плинтуса
+    const sqft = parseFloat(optionsFields.sqft.input.value);
+    const isSqftValid = !isNaN(sqft) && sqft > 0 && optionsFields.sqft.error.style.display === 'none';
+    const hasBaseboardCheckbox = dependentFields.find((field) => field.id === 'hasBaseboard');
+    const baseboardLengthResult = dependentFields.find((field) => field.id === 'baseboardLengthResult');
+    const baseboardLengthSpan = dependentFields.find((field) => field.id === 'baseboardLength');
 
-    // Если sqft валидно и чекбокс отмечен, обновляем результат
     if (isSqftValid && hasBaseboardCheckbox.checked) {
-      baseboardLengthSpan.textContent = calculateBaseboardLength(sqft); // Расчет длины плинтуса
-      baseboardLengthResult.classList.remove('hidden'); // Показываем результат
+      baseboardLengthSpan.textContent = calculateBaseboardLength(sqft);
+      baseboardLengthResult.classList.remove('hidden');
     } else {
-      baseboardLengthResult.classList.add('hidden'); // Скрываем результат
+      baseboardLengthResult.classList.add('hidden');
     }
   };
 
@@ -73,12 +93,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // Обработчик изменения выбора материала
   const handleMaterialChange = (event) => toggleMaterialOptions(event.target.value);
 
+  // Функция для обновления состояния кнопки CALCULATE
+  const updateSubmitButton = () => {
+    const isFormValid = validateAllFields(); // Проверяем валидность всех обязательных полей
+    submitButton.disabled = !isFormValid; // Активируем или деактивируем кнопку
+  };
+
   // Обработчик события input (ввод данных в поля формы)
   form.addEventListener('input', (event) => {
-    const field = userDataFields[event.target.id] || optionsFields[event.target.id]; // Получаем поле по ID
+    const field = userDataFields[event.target.id] || optionsFields[event.target.id];
     if (field) validateFields[field.input.id](field); // Валидируем поле
-    toggleDependentFields(validateForm()); // Включаем/отключаем зависимые поля
+
+    // Если первые 4 поля валидны, разблокируем остальные поля
+    if (validateContactFields()) {
+      toggleDependentFields(true);
+    } else {
+      toggleDependentFields(false);
+    }
+
     updateBaseboardLength(); // Обновляем длину плинтуса
+    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE
   });
 
   // Обработчик события change (изменение состояния чекбоксов или выпадающих списков)
@@ -88,10 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (event.target.id === 'material') {
       handleMaterialChange(event); // Управляем опциями материалов
     } else if (event.target.id === 'hasStairs') {
-      const stairsField = dependentFields.find((field) => field.id === 'stairsField'); // Поле для ввода количества ступеней
-      stairsField.classList.toggle('hidden', !event.target.checked); // Показываем/скрываем поле
-      if (!event.target.checked) optionsFields.stairCount.error.style.display = 'none'; // Скрываем ошибку, если чекбокс не отмечен
+      const stairsField = dependentFields.find((field) => field.id === 'stairsField');
+      stairsField.classList.toggle('hidden', !event.target.checked);
+      if (!event.target.checked) optionsFields.stairCount.error.style.display = 'none';
     }
+    updateSubmitButton(); // Обновляем состояние кнопки CALCULATE
   });
 
   // Обработчик события mouseover (наведение курсора на элемент)
@@ -112,4 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Изначально скрываем все дополнительные опции материалов
   toggleMaterialOptions('');
+
+  // Изначально деактивируем кнопку CALCULATE
+  submitButton.disabled = true;
 });
