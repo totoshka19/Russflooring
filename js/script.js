@@ -119,4 +119,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Изначально скрываем все дополнительные опции
   toggleMaterialOptions('');
+
+  // Находим чекбокс и элемент stairsField
+  const hasStairsCheckbox = document.getElementById('hasStairs');
+  const stairsField = document.getElementById('stairsField');
+
+  // Добавляем обработчик события change на чекбокс
+  hasStairsCheckbox.addEventListener('change', () => {
+    if (hasStairsCheckbox.checked) {
+      // Если чекбокс отмечен, показываем stairsField
+      stairsField.classList.remove('hidden');
+    } else {
+      // Если чекбокс не отмечен, скрываем stairsField
+      stairsField.classList.add('hidden');
+    }
+  });
 });
