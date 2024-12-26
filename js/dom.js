@@ -1,5 +1,3 @@
-// dom.js
-
 // Форма
 export const form = document.getElementById('costCalculator');
 
@@ -43,3 +41,8 @@ export const stairsField = document.getElementById('stairsField');
 // Labels
 export const labelHasBaseboard = document.querySelector('label[for="hasBaseboard"]'); // Надпись для "Do you need baseboard replacement?"
 export const labelHasStairs = document.querySelector('label[for="hasStairs"]');       // Надпись для "Do you have stairs?"
+
+// Кнопка CALCULATE и элементы для отображения общей стоимости
+export const submitButton = document.getElementById('submitButton');
+export const totalCostElement = document.getElementById('totalCost');
+export const costAmountElement = document.getElementById('costAmount');

@@ -31,19 +31,15 @@ import {
   stairsField,
   labelHasBaseboard,
   labelHasStairs,
+  submitButton,
+  totalCostElement,
+  costAmountElement
 } from './dom.js'; // Импортируем константы
 import { calculateBaseboardLength, calculateTotalCost } from './calculations.js'; // Импортируем calculateTotalCost
 import { toggleMaterialOptions } from './materialOptions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const tooltip = createTooltip('Please fill in the contact details first.');
-
-  // Получаем кнопку CALCULATE
-  const submitButton = document.getElementById('submitButton');
-
-  // Получаем элемент для отображения общей стоимости
-  const totalCostElement = document.getElementById('totalCost');
-  const costAmountElement = document.getElementById('costAmount');
 
   // Объект с функциями валидации для каждого поля
   const validateFields = {
