@@ -41,6 +41,29 @@ import { toggleMaterialOptions } from './materialOptions.js';
 document.addEventListener('DOMContentLoaded', () => {
   const tooltip = createTooltip('Please fill in the contact details first.');
 
+  // Зависимые поля
+  const dependentFields = [
+    sqft,
+    demoType,
+    material,
+    vinylOption,
+    laminateOption,
+    hardwoodOption,
+    installationType,
+    hasBaseboard,
+    hasStairs,
+    baseboardLengthResult,
+    baseboardLength,
+    vinylOptions,
+    laminateOptions,
+    hardwoodOptions,
+    installationOnlyOptions,
+    stairsField,
+  ];
+
+  // Метки
+  const labels = [labelHasBaseboard, labelHasStairs];
+
   // Объект с функциями валидации для каждого поля
   const validateFields = {
     userName: () => validateName(userName, nameError),
@@ -89,25 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Функция для включения/отключения зависимых полей и меток
   const toggleDependentFields = (isEnabled) => {
-    const dependentFields = [
-      demoType,
-      material,
-      vinylOption,
-      laminateOption,
-      hardwoodOption,
-      installationType,
-      hasBaseboard,
-      hasStairs,
-      baseboardLengthResult,
-      baseboardLength,
-      vinylOptions,
-      laminateOptions,
-      hardwoodOptions,
-      installationOnlyOptions,
-      stairsField,
-    ];
     dependentFields.forEach((field) => (field.disabled = !isEnabled)); // Включаем/отключаем поля
-    [labelHasBaseboard, labelHasStairs].forEach((label) => label.classList.toggle('disabled', !isEnabled)); // Включаем/отключаем метки
+    labels.forEach((label) => label.classList.toggle('disabled', !isEnabled)); // Включаем/отключаем метки
   };
 
   // Функция для обновления отображения длины плинтусов
@@ -184,24 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Обработчик события mouseover (наведение курсора на элемент)
   form.addEventListener('mouseover', (event) => {
-    const dependentFields = [
-      demoType,
-      material,
-      vinylOption,
-      laminateOption,
-      hardwoodOption,
-      installationType,
-      hasBaseboard,
-      hasStairs,
-      baseboardLengthResult,
-      baseboardLength,
-      vinylOptions,
-      laminateOptions,
-      hardwoodOptions,
-      installationOnlyOptions,
-      stairsField,
-    ];
-    if (dependentFields.includes(event.target) || [labelHasBaseboard, labelHasStairs].includes(event.target)) {
+    if (dependentFields.includes(event.target) || labels.includes(event.target)) {
       showTooltip(tooltip, event, form); // Показываем подсказку
     }
   });
