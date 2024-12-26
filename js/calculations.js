@@ -1,10 +1,21 @@
+// Импортируем константы
+import {
+  BASEBOARD_COST_PER_FOOT,
+  STAIR_COST_PER_STEP,
+  INSTALLATION_COST_VINYL,
+  INSTALLATION_COST_LAMINATE,
+  INSTALLATION_COST_HARDWOOD,
+  BASEBOARD_LENGTH_MULTIPLIER,
+  BASEBOARD_LENGTH_CONSTANT,
+} from './constants.js';
+
 /**
  * Вычисляет длину плинтусов на основе площади в квадратных футах.
  * @param {number} sqft - Площадь в квадратных футах.
  * @returns {number} - Длина плинтусов в футах (целое число).
  */
 export const calculateBaseboardLength = (sqft) => {
-  return Math.round(2 * (Math.sqrt(sqft) * 2 + 100));
+  return Math.round(BASEBOARD_LENGTH_MULTIPLIER * (Math.sqrt(sqft) * 2 + BASEBOARD_LENGTH_CONSTANT));
 };
 
 /**
@@ -12,6 +23,7 @@ export const calculateBaseboardLength = (sqft) => {
  * @returns {string} - Общая стоимость проекта, округленная до двух знаков после запятой.
  */
 export const calculateTotalCost = () => {
+  // Получаем данные из формы
   const sqft = parseFloat(document.getElementById('sqft').value);
   const demoType = parseFloat(document.getElementById('demoType').value);
   const material = document.getElementById('material').value;
@@ -19,22 +31,45 @@ export const calculateTotalCost = () => {
   const hasStairs = document.getElementById('hasStairs').checked;
   const stairCount = hasStairs ? parseFloat(document.getElementById('stairCount').value) : 0;
 
-  let materialCost = 0;
+  // Расчет стоимости демонтажа
+  const demoCost = sqft * demoType;
 
-  if (material === 'vinyl') {
-    materialCost = parseFloat(document.getElementById('vinylOption').value);
-  } else if (material === 'laminate') {
-    materialCost = parseFloat(document.getElementById('laminateOption').value);
-  } else if (material === 'hardwood') {
-    materialCost = parseFloat(document.getElementById('hardwoodOption').value);
-  } else if (material === 'installationOnly') {
-    materialCost = parseFloat(document.getElementById('installationType').value);
+  // Расчет стоимости плинтусов
+  const baseboardCost = hasBaseboard ? calculateBaseboardLength(sqft) * BASEBOARD_COST_PER_FOOT : 0;
+
+  // Расчет стоимости лестниц
+  const stairsCost = hasStairs ? stairCount * STAIR_COST_PER_STEP : 0;
+
+  // Расчет стоимости материала и установки
+  let materialCost = 0;
+  let installationCost = 0;
+
+  switch (material) {
+    case 'vinyl':
+      const vinylOption = parseFloat(document.getElementById('vinylOption').value);
+      materialCost = sqft * vinylOption;
+      installationCost = sqft * INSTALLATION_COST_VINYL;
+      break;
+    case 'laminate':
+      const laminateOption = parseFloat(document.getElementById('laminateOption').value);
+      materialCost = sqft * laminateOption;
+      installationCost = sqft * INSTALLATION_COST_LAMINATE;
+      break;
+    case 'hardwood':
+      const hardwoodOption = parseFloat(document.getElementById('hardwoodOption').value);
+      materialCost = sqft * hardwoodOption;
+      installationCost = sqft * INSTALLATION_COST_HARDWOOD;
+      break;
+    case 'installationOnly':
+      const installationType = parseFloat(document.getElementById('installationType').value);
+      installationCost = sqft * installationType;
+      break;
+    default:
+      break;
   }
 
-  const baseboardCost = hasBaseboard ? calculateBaseboardLength(sqft) * 0.5 : 0; // Примерная стоимость плинтуса
-  const stairsCost = hasStairs ? stairCount * 50 : 0; // Примерная стоимость ступеней
-
-  const totalCost = (sqft * (demoType + materialCost)) + baseboardCost + stairsCost;
+  // Общая стоимость
+  const totalCost = demoCost + baseboardCost + stairsCost + materialCost + installationCost;
 
   return totalCost.toFixed(2);
 };
