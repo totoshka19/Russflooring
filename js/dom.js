@@ -47,11 +47,3 @@ export const getLabels = () => [
   document.querySelector('label[for="hasBaseboard"]'), // Надпись для "Do you need baseboard replacement?"
   document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"
 ];
-
-// Функция для получения опций материалов
-export const getMaterialOptions = () => ({
-  vinyl: getElementById('vinylOptions'),
-  laminate: getElementById('laminateOptions'),
-  hardwood: getElementById('hardwoodOptions'),
-  installationOnly: getElementById('installationOnlyOptions'),
-});
