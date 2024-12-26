@@ -1,15 +1,11 @@
-// materialOptions.js
-
-import { getDependentFields } from './dom.js'; // Импортируем функцию для получения зависимых полей
+import {
+  vinylOptions,
+  laminateOptions,
+  hardwoodOptions,
+  installationOnlyOptions,
+} from './dom.js'; // Импортируем константы
 
 export const toggleMaterialOptions = (material) => {
-  // Получаем все дополнительные опции через dom.js
-  const dependentFields = getDependentFields();
-  const vinylOptions = dependentFields.find((field) => field.id === 'vinylOptions');
-  const laminateOptions = dependentFields.find((field) => field.id === 'laminateOptions');
-  const hardwoodOptions = dependentFields.find((field) => field.id === 'hardwoodOptions');
-  const installationOnlyOptions = dependentFields.find((field) => field.id === 'installationOnlyOptions');
-
   // Скрываем все дополнительные опции
   vinylOptions.classList.add('hidden');
   laminateOptions.classList.add('hidden');

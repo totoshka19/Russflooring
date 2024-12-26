@@ -1,5 +1,3 @@
-// calculations.js
-
 // Импортируем константы
 import {
   BASEBOARD_COST_PER_FOOT,
@@ -10,6 +8,20 @@ import {
   BASEBOARD_LENGTH_MULTIPLIER,
   BASEBOARD_LENGTH_CONSTANT,
 } from './constants.js';
+
+// Импортируем DOM-элементы
+import {
+  sqft,
+  demoType,
+  material,
+  hasBaseboard,
+  hasStairs,
+  stairCount,
+  vinylOption,
+  laminateOption,
+  hardwoodOption,
+  installationType,
+} from './dom.js';
 
 /**
  * Вычисляет длину плинтусов на основе площади в квадратных футах.
@@ -26,45 +38,45 @@ export const calculateBaseboardLength = (sqft) => {
  */
 export const calculateTotalCost = () => {
   // Получаем данные из формы
-  const sqft = parseFloat(document.getElementById('sqft').value);
-  const demoType = parseFloat(document.getElementById('demoType').value);
-  const material = document.getElementById('material').value;
-  const hasBaseboard = document.getElementById('hasBaseboard').checked;
-  const hasStairs = document.getElementById('hasStairs').checked;
-  const stairCount = hasStairs ? parseFloat(document.getElementById('stairCount').value) : 0;
+  const sqftValue = parseFloat(sqft.value);
+  const demoTypeValue = parseFloat(demoType.value);
+  const materialValue = material.value;
+  const hasBaseboardChecked = hasBaseboard.checked;
+  const hasStairsChecked = hasStairs.checked;
+  const stairCountValue = hasStairsChecked ? parseFloat(stairCount.value) : 0;
 
   // Расчет стоимости демонтажа
-  const demoCost = sqft * demoType;
+  const demoCost = sqftValue * demoTypeValue;
 
   // Расчет стоимости плинтусов
-  const baseboardCost = hasBaseboard ? calculateBaseboardLength(sqft) * BASEBOARD_COST_PER_FOOT : 0;
+  const baseboardCost = hasBaseboardChecked ? calculateBaseboardLength(sqftValue) * BASEBOARD_COST_PER_FOOT : 0;
 
   // Расчет стоимости лестниц
-  const stairsCost = hasStairs ? stairCount * STAIR_COST_PER_STEP : 0;
+  const stairsCost = hasStairsChecked ? stairCountValue * STAIR_COST_PER_STEP : 0;
 
   // Расчет стоимости материала и установки
   let materialCost = 0;
   let installationCost = 0;
 
-  switch (material) {
+  switch (materialValue) {
     case 'vinyl':
-      const vinylOption = parseFloat(document.getElementById('vinylOption').value);
-      materialCost = sqft * vinylOption;
-      installationCost = sqft * INSTALLATION_COST_VINYL;
+      const vinylOptionValue = parseFloat(vinylOption.value);
+      materialCost = sqftValue * vinylOptionValue;
+      installationCost = sqftValue * INSTALLATION_COST_VINYL;
       break;
     case 'laminate':
-      const laminateOption = parseFloat(document.getElementById('laminateOption').value);
-      materialCost = sqft * laminateOption;
-      installationCost = sqft * INSTALLATION_COST_LAMINATE;
+      const laminateOptionValue = parseFloat(laminateOption.value);
+      materialCost = sqftValue * laminateOptionValue;
+      installationCost = sqftValue * INSTALLATION_COST_LAMINATE;
       break;
     case 'hardwood':
-      const hardwoodOption = parseFloat(document.getElementById('hardwoodOption').value);
-      materialCost = sqft * hardwoodOption;
-      installationCost = sqft * INSTALLATION_COST_HARDWOOD;
+      const hardwoodOptionValue = parseFloat(hardwoodOption.value);
+      materialCost = sqftValue * hardwoodOptionValue;
+      installationCost = sqftValue * INSTALLATION_COST_HARDWOOD;
       break;
     case 'installationOnly':
-      const installationType = parseFloat(document.getElementById('installationType').value);
-      installationCost = sqft * installationType;
+      const installationTypeValue = parseFloat(installationType.value);
+      installationCost = sqftValue * installationTypeValue;
       break;
     default:
       break;

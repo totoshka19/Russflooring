@@ -1,49 +1,45 @@
 // dom.js
 
-// Функция для получения элемента по ID
-const getElementById = (id) => document.getElementById(id);
+// Форма
+export const form = document.getElementById('costCalculator');
 
-// Функция для получения формы
-export const getForm = () => getElementById('costCalculator');
+// Поля пользовательских данных
+export const userName = document.getElementById('userName');
+export const userPhone = document.getElementById('userPhone');
+export const userEmail = document.getElementById('userEmail');
+export const userZip = document.getElementById('userZip');
 
-// Функция для получения полей пользовательских данных
-export const getUserDataFields = () => ({
-  userName: { input: getElementById('userName'), error: getElementById('nameError') },
-  userPhone: { input: getElementById('userPhone'), error: getElementById('phoneError') },
-  userEmail: { input: getElementById('userEmail'), error: getElementById('emailError') },
-  userZip: { input: getElementById('userZip'), error: getElementById('zipError') },
-});
+// Ошибки пользовательских данных
+export const nameError = document.getElementById('nameError');
+export const phoneError = document.getElementById('phoneError');
+export const emailError = document.getElementById('emailError');
+export const zipError = document.getElementById('zipError');
 
-// Функция для получения полей опций
-export const getOptionsFields = () => ({
-  sqft: { input: getElementById('sqft'), error: getElementById('sqftError') },
-  stairCount: { input: getElementById('stairCount'), error: getElementById('stairCountError') },
-});
+// Поля опций
+export const sqft = document.getElementById('sqft');
+export const stairCount = document.getElementById('stairCount');
 
-// Функция для получения всех зависимых полей
-export const getDependentFields = () => [
-  getElementById('sqft'),
-  getElementById('demoType'),
-  getElementById('material'),
-  getElementById('vinylOption'),
-  getElementById('laminateOption'),
-  getElementById('hardwoodOption'),
-  getElementById('installationType'),
-  getElementById('stairCount'),
-  getElementById('hasBaseboard'), // Добавлено поле "Do you need baseboard replacement"
-  getElementById('hasStairs'),    // Добавлено поле "Do you have stairs"
-  getElementById('baseboardLengthResult'),
-  getElementById('baseboardLength'),
-  getElementById('material'),
-  getElementById('vinylOptions'),
-  getElementById('laminateOptions'),
-  getElementById('hardwoodOptions'),
-  getElementById('installationOnlyOptions'),
-  getElementById('stairsField')
-];
+// Ошибки опций
+export const sqftError = document.getElementById('sqftError');
+export const stairCountError = document.getElementById('stairCountError');
 
-// Функция для получения всех labels
-export const getLabels = () => [
-  document.querySelector('label[for="hasBaseboard"]'), // Надпись для "Do you need baseboard replacement?"
-  document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"
-];
+// Зависимые поля
+export const demoType = document.getElementById('demoType');
+export const material = document.getElementById('material');
+export const vinylOption = document.getElementById('vinylOption');
+export const laminateOption = document.getElementById('laminateOption');
+export const hardwoodOption = document.getElementById('hardwoodOption');
+export const installationType = document.getElementById('installationType');
+export const hasBaseboard = document.getElementById('hasBaseboard'); // Поле "Do you need baseboard replacement"
+export const hasStairs = document.getElementById('hasStairs');       // Поле "Do you have stairs"
+export const baseboardLengthResult = document.getElementById('baseboardLengthResult');
+export const baseboardLength = document.getElementById('baseboardLength');
+export const vinylOptions = document.getElementById('vinylOptions');
+export const laminateOptions = document.getElementById('laminateOptions');
+export const hardwoodOptions = document.getElementById('hardwoodOptions');
+export const installationOnlyOptions = document.getElementById('installationOnlyOptions');
+export const stairsField = document.getElementById('stairsField');
+
+// Labels
+export const labelHasBaseboard = document.querySelector('label[for="hasBaseboard"]'); // Надпись для "Do you need baseboard replacement?"
+export const labelHasStairs = document.querySelector('label[for="hasStairs"]');       // Надпись для "Do you have stairs?"
