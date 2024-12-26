@@ -3,8 +3,10 @@
 // Функция для получения элемента по ID
 const getElementById = (id) => document.getElementById(id);
 
+// Функция для получения формы
 export const getForm = () => getElementById('costCalculator');
 
+// Функция для получения полей пользовательских данных
 export const getUserDataFields = () => ({
   userName: { input: getElementById('userName'), error: getElementById('nameError') },
   userPhone: { input: getElementById('userPhone'), error: getElementById('phoneError') },
@@ -12,11 +14,13 @@ export const getUserDataFields = () => ({
   userZip: { input: getElementById('userZip'), error: getElementById('zipError') },
 });
 
+// Функция для получения полей опций
 export const getOptionsFields = () => ({
   sqft: { input: getElementById('sqft'), error: getElementById('sqftError') },
   stairCount: { input: getElementById('stairCount'), error: getElementById('stairCountError') },
 });
 
+// Функция для получения всех зависимых полей
 export const getDependentFields = () => [
   getElementById('sqft'),
   getElementById('demoType'),
@@ -43,3 +47,11 @@ export const getLabels = () => [
   document.querySelector('label[for="hasBaseboard"]'), // Надпись для "Do you need baseboard replacement?"
   document.querySelector('label[for="hasStairs"]'),    // Надпись для "Do you have stairs?"
 ];
+
+// Функция для получения опций материалов
+export const getMaterialOptions = () => ({
+  vinyl: getElementById('vinylOptions'),
+  laminate: getElementById('laminateOptions'),
+  hardwood: getElementById('hardwoodOptions'),
+  installationOnly: getElementById('installationOnlyOptions'),
+});

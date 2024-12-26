@@ -1,3 +1,5 @@
+// calculations.js
+
 // Импортируем константы
 import {
   BASEBOARD_COST_PER_FOOT,
